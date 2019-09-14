@@ -19,7 +19,6 @@ length(unique(dat$`Client File Number`)) #15,352
 
 # take a look at unique values of service notes
 length(unique(dat$`Notes of Service`))
-
 dat$`Notes of Service` <- trimws(tolower(dat$`Notes of Service`))
 
 #use grep to replace plurals with singluar
