@@ -57,8 +57,6 @@ dat <- dat %>% group_by(ID) %>% mutate(tookbus=ifelse(sum(`Bus Tickets (Number o
   mutate(nevents=sum(!is.na(ID))) %>% ungroup() #count number of events associated with a person
 #View(unique(dat[,c("ID","tookbus")]))
 
-dat <- dat %>% group_by(ID,MONTH.C) %>% #calculate total dollars per month per person
-  mutate(dollarsmonth=sum(`Financial Support`)) %>% ungroup()
 
 # financial support pretty constant over months
 ggplot(data=dat[dat$`Financial Support`>0,]) +
@@ -66,10 +64,20 @@ ggplot(data=dat[dat$`Financial Support`>0,]) +
   geom_boxplot(aes(x=MONTH.C,y=`Financial Support`))
   
 # financial support pretty constant over months (spending per person per month for those with financial supprt > 0)
-ggplot(data=dat[dat$dollarsmonth>0,]) +
-  geom_point(aes(x=MONTH.C,y=dollarsmonth)) +
-  geom_boxplot(aes(x=MONTH.C,y=dollarsmonth))
+dat <- dat %>% group_by(ID,MONTH.C) %>% #calculate total dollars per month per person
+  mutate(dollarsmonth=sum(`Financial Support`)) %>% ungroup()
+dat.dm <- dat %>% select(MONTH.C,ID,dollarsmonth) %>% distinct() %>% filter(dollarsmonth>0)
+ggplot(data=dat.dm) +
+  geom_boxplot(aes(x=MONTH.C,y=dollarsmonth)) +
+  geom_point(aes(x=MONTH.C,y=dollarsmonth)) 
 
+# explore clothing?
+dat.cl <- dat %>% filter(!is.na(`Clothing Items`))
+dat.cl <- dat.cl %>% group_by(MONTH.C,YEAR) %>% #calculate total dollars per month per person
+  mutate(clothesmonth=sum(`Clothing Items`)) %>% ungroup()
+dat.cl <- dat.cl %>% select(MONTH.C,YEAR,clothesmonth) %>% distinct() %>% filter(clothesmonth>0)
+hist(dat.cl$clothesmonth)
 
+# how has the number of clients grown over the years?
 
 
