@@ -20,13 +20,15 @@ head(dat$Date)
 dat <- dat %>% mutate(DATENUM=format(strptime(Date,"%m/%d/%Y"),"%Y%m%d"),
                       YEAR=as.numeric(substr(DATENUM,1,4)),
                       MONTH=as.numeric(substr(DATENUM,5,6)),
-                      MONTH.C=format(strptime(DATENUM,"%Y%m%d"),"%b"),
-                      MONTH.C=factor(MONTH.C,levels=c("Jan","Feb","Mar","Apr","May","Jun","July","Aug","Sep","Oct","Nov","Dec")),
+                      MONTH.C=format(strptime(Date,"%m/%d/%Y"),"%b"),
                       DAY=as.numeric(substr(DATENUM,7,8))) %>%
   arrange(`Client File Number`,DATENUM) %>%
   rename(ID=`Client File Number`) %>% #renaming ID
   select(-c(`Client File Merge`)) # not going to use this
-
+#order months for plots
+dat$MONTH.C <- factor(dat$MONTH.C,levels=c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
+unique(dat$MONTH[is.na(dat$MONTH.C)])
+unique(dat$DATENUM[is.na(dat$MONTH.C)])
 # create range of services with first and last entry per person
 dat <- dat %>% mutate(firstvis=as.numeric(strptime(DATENUM,"%Y%m%d")),
                       lastvis=as.numeric(strptime(DATENUM,"%Y%m%d")),
@@ -79,5 +81,33 @@ dat.cl <- dat.cl %>% select(MONTH.C,YEAR,clothesmonth) %>% distinct() %>% filter
 hist(dat.cl$clothesmonth)
 
 # how has the number of clients grown over the years?
+dat.id <- dat %>% group_by(YEAR) %>%
+  mutate(sumID=length(unique(ID))) %>% ungroup() %>%
+  select(YEAR,sumID) %>% distinct()
+
+#use uptick in clients as an introduction
+plot(dat.id$YEAR,dat.id$sumID)
+
+#hygiene kits associated with a time of year?
+
+# spending is pretty consistent mont-by-month, but is there more action during a certain time of year?
+dat.events <- dat %>% group_by(MONTH.C,YEAR) %>%
+  mutate(sumevents=length(ID)) %>% ungroup() %>%
+  select(MONTH.C,MONTH,YEAR,sumevents) %>% distinct() 
+
+plot(dat.events[dat.events$YEAR%in%c(2001,2002),]$MONTH.C,dat.events$sumevents)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
