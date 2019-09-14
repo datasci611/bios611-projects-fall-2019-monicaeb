@@ -20,6 +20,8 @@ head(dat$Date)
 dat <- dat %>% mutate(DATENUM=format(strptime(Date,"%m/%d/%Y"),"%Y%m%d"),
                       YEAR=as.numeric(substr(DATENUM,1,4)),
                       MONTH=as.numeric(substr(DATENUM,5,6)),
+                      MONTH.C=format(strptime(DATENUM,"%Y%m%d"),"%b"),
+                      MONTH.C=factor(MONTH.C,levels=c("Jan","Feb","Mar","Apr","May","Jun","July","Aug","Sep","Oct","Nov","Dec")),
                       DAY=as.numeric(substr(DATENUM,7,8))) %>%
   arrange(`Client File Number`,DATENUM) %>%
   rename(ID=`Client File Number`) %>% #renaming ID
@@ -55,15 +57,19 @@ dat <- dat %>% group_by(ID) %>% mutate(tookbus=ifelse(sum(`Bus Tickets (Number o
   mutate(nevents=sum(!is.na(ID))) %>% ungroup() #count number of events associated with a person
 #View(unique(dat[,c("ID","tookbus")]))
 
+dat <- dat %>% group_by(ID,MONTH.C) %>% #calculate total dollars per month per person
+  mutate(dollarsmonth=sum(`Financial Support`)) %>% ungroup()
+
 # financial support pretty constant over months
 ggplot(data=dat[dat$`Financial Support`>0,]) +
-  geom_point(aes(x=MONTH,y=`Financial Support`)) +
-  geom_smooth(aes(x=MONTH,y=`Financial Support`))
+  geom_point(aes(x=MONTH.C,y=`Financial Support`)) +
+  geom_boxplot(aes(x=MONTH.C,y=`Financial Support`))
   
-dat <- dat %>% group_by(MONTH) %>%
-  mutate(hygienepermonth=sum(`Hygiene Kits`,na.rm=TRUE))
+# financial support pretty constant over months (spending per person per month for those with financial supprt > 0)
+ggplot(data=dat[dat$dollarsmonth>0,]) +
+  geom_point(aes(x=MONTH.C,y=dollarsmonth)) +
+  geom_boxplot(aes(x=MONTH.C,y=dollarsmonth))
 
-ggplot(data=dat,aes(x=MONTH,y=hygienepermonth)) +
-  geom_bar(stat="identity")
 
-ggplot(data=dat,)
+
+
