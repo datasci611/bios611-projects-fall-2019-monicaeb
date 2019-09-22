@@ -12,11 +12,9 @@ colnames(dat) #only first 13 columns defined in metadata on github
 dat <- dat[,c(1:13)] %>% select(-c(Referrals))
 sapply(dat,class) 
 
-# how many people are we working with?
-length(unique(dat$`Client File Number`)) #15,352
 
-# format dates for total sorting. create month and day column for trending.
-head(dat$Date)
+# format dates for total sorting. create month and day column for trending. filter for last 20 yrs because of some erroneous data early on.
+
 dat <- dat %>% mutate(DATENUM=format(strptime(Date,"%m/%d/%Y"),"%Y%m%d"),
                       YEAR=as.numeric(substr(DATENUM,1,4)),
                       MONTH=as.numeric(substr(DATENUM,5,6)),
@@ -24,26 +22,33 @@ dat <- dat %>% mutate(DATENUM=format(strptime(Date,"%m/%d/%Y"),"%Y%m%d"),
                       DAY=as.numeric(substr(DATENUM,7,8))) %>%
   arrange(`Client File Number`,DATENUM) %>%
   rename(ID=`Client File Number`) %>% #renaming ID
-  select(-c(`Client File Merge`)) # not going to use this
-#order months for plots
+  select(-c(`Client File Merge`)) %>% # not going to use this
+  filter(YEAR%in%c(1989:2019)) %>%
+  mutate(ID=as.character(ID))
+
+# big outlier in 2018: client #12943 had 450121 pounds which is probably not right
+dat <- dat %>% filter(`Food Pounds`<450121 | is.na(`Food Pounds`))
+
+#order months for plots by month
 dat$MONTH.C <- factor(dat$MONTH.C,levels=c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
-unique(dat$MONTH[is.na(dat$MONTH.C)])
-unique(dat$DATENUM[is.na(dat$MONTH.C)])
+
 # create range of services with first and last entry per person
-dat <- dat %>% mutate(firstvis=as.numeric(strptime(DATENUM,"%Y%m%d")),
-                      lastvis=as.numeric(strptime(DATENUM,"%Y%m%d")),
-                      difftime(lastvis,firstvis))
+dat <- dat %>% group_by(ID) %>%
+  mutate(firstvis=as.numeric(strptime(DATENUM[1],"%Y%m%d")),
+         lastvis=as.numeric(strptime(DATENUM,"%Y%m%d"))) %>%
+         mutate(rangedays=(max(lastvis)-firstvis)/86400 +1) %>%
+  ungroup() # convert back to number of days by dividing by number of seconds/day
 
-# take a look at unique values of service notes
-length(unique(dat$`Notes of Service`))
-dat$`Notes of Service` <- trimws(tolower(dat$`Notes of Service`))
 
-#use grep to replace plurals with singluar
-dat$`Notes of Service` <- gsub("tickets","ticket",dat$`Notes of Service`)
-dat$`Notes of Service` <- gsub("referrals","referral",dat$`Notes of Service`)
+# # take a look at unique values of service notes
+# length(unique(dat$`Notes of Service`))
+# dat$`Notes of Service` <- trimws(tolower(dat$`Notes of Service`))
+# #use grep to replace plurals with singluar
+# dat$`Notes of Service` <- gsub("tickets","ticket",dat$`Notes of Service`)
+# dat$`Notes of Service` <- gsub("referrals","referral",dat$`Notes of Service`)
 
 #i noticed often populated with clothes or clothing when the clothing column is actually NA. hmm
-sum(!is.na(dat$`Clothing Items`))
+#sum(!is.na(dat$`Clothing Items`))
 #View(dat[is.na(dat$`Clothing Items`),])
 
 # look at some associations. more bus tickets or diapers certain times of year? popular types of clothes?
@@ -53,17 +58,19 @@ sum(!is.na(dat$`Clothing Items`))
 
 # fill in missing bus ticket info where there's a comment about bus tickets
 #dat$`Bus Tickets (Number of)`[is.na(dat$`Bus Tickets (Number of)`&"bus"%in%dat$`Notes of Service`)]
-length(unique(dat[!is.na(dat$`Bus Tickets (Number of)`) & dat$`Bus Tickets (Number of)`>0,]$ID)) #92 people got bus tickets
-dat <- dat %>% group_by(ID) %>% mutate(tookbus=ifelse(sum(`Bus Tickets (Number of)`)==0,"N","Y")) %>%
-  mutate(tookbus=ifelse(is.na(`Bus Tickets (Number of)`),NA,tookbus)) %>%
-  mutate(nevents=sum(!is.na(ID))) %>% ungroup() #count number of events associated with a person
-#View(unique(dat[,c("ID","tookbus")]))
-
-
+# length(unique(dat[!is.na(dat$`Bus Tickets (Number of)`) & dat$`Bus Tickets (Number of)`>0,]$ID)) #92 people got bus tickets
+# dat <- dat %>% group_by(ID) %>% mutate(tookbus=ifelse(sum(`Bus Tickets (Number of)`)==0,"N","Y")) %>%
+#   mutate(tookbus=ifelse(is.na(`Bus Tickets (Number of)`),NA,tookbus)) %>%
+#   mutate(nevents=sum(!is.na(ID))) %>% ungroup() #count number of events associated with a person
+# #View(unique(dat[,c("ID","tookbus")]))
+# 
+# 
 # financial support pretty constant over months
 ggplot(data=dat[dat$`Financial Support`>0,]) +
   geom_point(aes(x=MONTH.C,y=`Financial Support`)) +
   geom_boxplot(aes(x=MONTH.C,y=`Financial Support`))
+
+dat.fin 
   
 # financial support pretty constant over months (spending per person per month for those with financial supprt > 0)
 dat <- dat %>% group_by(ID,MONTH.C) %>% #calculate total dollars per month per person
@@ -72,40 +79,64 @@ dat.dm <- dat %>% select(MONTH.C,ID,dollarsmonth) %>% distinct() %>% filter(doll
 ggplot(data=dat.dm) +
   geom_boxplot(aes(x=MONTH.C,y=dollarsmonth)) +
   geom_point(aes(x=MONTH.C,y=dollarsmonth)) 
+# 
+# # explore clothing?
+# dat.cl <- dat %>% filter(!is.na(`Clothing Items`))
+# dat.cl <- dat.cl %>% group_by(MONTH.C,YEAR) %>% #calculate total dollars per month per person
+#   mutate(clothesmonth=sum(`Clothing Items`)) %>% ungroup()
+# dat.cl <- dat.cl %>% select(MONTH.C,YEAR,clothesmonth) %>% distinct() %>% filter(clothesmonth>0)
+# hist(dat.cl$clothesmonth)
 
-# explore clothing?
-dat.cl <- dat %>% filter(!is.na(`Clothing Items`))
-dat.cl <- dat.cl %>% group_by(MONTH.C,YEAR) %>% #calculate total dollars per month per person
-  mutate(clothesmonth=sum(`Clothing Items`)) %>% ungroup()
-dat.cl <- dat.cl %>% select(MONTH.C,YEAR,clothesmonth) %>% distinct() %>% filter(clothesmonth>0)
-hist(dat.cl$clothesmonth)
+# pretty consistent number of events per month, june looks is a little more active
+dat.events <- dat %>% group_by(MONTH.C,YEAR) %>%
+  mutate(sumevents=length(ID)) %>% ungroup() %>%
+  select(MONTH.C,MONTH,YEAR,sumevents) %>% distinct() 
 
+ggplot(data=dat.events) +
+  geom_boxplot(aes(x=MONTH.C,y=sumevents)) +
+  geom_point(aes(x=MONTH.C,y=sumevents))
+# # more school supplies in august? not really useful or interesting.
+# dat.sch <- dat %>% group_by(MONTH.C) %>%
+#   mutate(`School Kits`=ifelse(is.na(`School Kits`),0,`School Kits`)) %>%
+#   mutate(sumschool=sum(`School Kits`)) %>% ungroup() %>%
+#   select(MONTH.C,MONTH,YEAR,sumschool) %>% distinct() 
+# plot(dat.sch$MONTH.C,dat.sch$sumschool) #pretty consistent action between months too
+# 
+# dat.diap <- dat %>% filter(!is.na(Diapers) & Diapers>0)
+
+############## useful plots to export #####################
 # how has the number of clients grown over the years?
 dat.id <- dat %>% group_by(YEAR) %>%
   mutate(sumID=length(unique(ID))) %>% ungroup() %>%
   select(YEAR,sumID) %>% distinct()
 
 #use uptick in clients as an introduction
-plot(dat.id$YEAR,dat.id$sumID)
+ggplot(dat.id,mapping=aes(x=YEAR,y=sumID)) +
+  geom_point(aes(color=YEAR))
 
-#hygiene kits associated with a time of year?
+dat.id.food <- dat %>% group_by(YEAR) %>%
+  mutate(sumID=length(unique(ID)),sumfood=sum(`Food Pounds`,na.rm=TRUE)) %>% ungroup() %>%
+  select(YEAR,sumID,sumfood) %>% distinct()
 
-# spending is pretty consistent mont-by-month, but is there more action during a certain time of year?
-dat.events <- dat %>% group_by(MONTH.C,YEAR) %>%
-  mutate(sumevents=length(ID)) %>% ungroup() %>%
-  select(MONTH.C,MONTH,YEAR,sumevents) %>% distinct() 
+ggplot(dat.id.food,mapping=aes(x=YEAR,y=sumfood)) +
+  geom_point() # big outlier in 2018: client #12943 had 4500121 pounds which is probably not right
 
-plot(dat.events[dat.events$YEAR%in%c(2001,2002),]$MONTH.C,dat.events$sumevents)
-
-
-
-
-
-
-
+food.month.18 <- dat %>% filter(YEAR==2018) %>% group_by(MONTH.C) %>%
+  mutate(sumfood=sum(`Food Pounds`,na.rm=TRUE)) %>%
+  select(MONTH.C,sumfood) %>% distinct()
+ggplot(food.month.18,mapping=aes(x=MONTH.C,y=sumfood)) +
+  geom_point() # big outlier in 2018
 
 
 
+#### Question I can definitely talk about: distribution of how long people stay
+#### what happens right before people leave?
+id.range <- unique(dat[,c("ID","rangedays")]) %>%
+  mutate(xval="range")
+ggplot(data=id.range,aes(x=rangedays)) +
+  geom_histogram(bins=40)
+ggplot(data=id.range[id.range$rangedays>1,],aes(x=rangedays)) +
+  geom_histogram(bins=40)
 
 
 
