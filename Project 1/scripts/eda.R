@@ -35,8 +35,8 @@ dat$MONTH.C <- factor(dat$MONTH.C,levels=c("Jan","Feb","Mar","Apr","May","Jun","
 # create range of services with first and last entry per person
 dat <- dat %>% group_by(ID) %>%
   mutate(firstvis=as.numeric(strptime(DATENUM[1],"%Y%m%d")),
-         lastvis=as.numeric(strptime(DATENUM,"%Y%m%d"))) %>%
-         mutate(rangedays=(max(lastvis)-firstvis)/86400 +1) %>%
+         lastvis=as.numeric(strptime(max(DATENUM),"%Y%m%d"))) %>%
+         mutate(rangedays=(lastvis-firstvis)/86400 +1) %>%
   ungroup() # convert back to number of days by dividing by number of seconds/day
 
 
@@ -70,12 +70,12 @@ ggplot(data=dat[dat$`Financial Support`>0,]) +
   geom_point(aes(x=MONTH.C,y=`Financial Support`)) +
   geom_boxplot(aes(x=MONTH.C,y=`Financial Support`))
 
-dat.fin 
+
   
 # financial support pretty constant over months (spending per person per month for those with financial supprt > 0)
-dat <- dat %>% group_by(ID,MONTH.C) %>% #calculate total dollars per month per person
+dat1 <- dat %>% group_by(ID,MONTH.C) %>% #calculate total dollars per month per person
   mutate(dollarsmonth=sum(`Financial Support`)) %>% ungroup()
-dat.dm <- dat %>% select(MONTH.C,ID,dollarsmonth) %>% distinct() %>% filter(dollarsmonth>0)
+dat.dm <- dat1 %>% select(MONTH.C,ID,dollarsmonth) %>% distinct() %>% filter(dollarsmonth>0)
 ggplot(data=dat.dm) +
   geom_boxplot(aes(x=MONTH.C,y=dollarsmonth)) +
   geom_point(aes(x=MONTH.C,y=dollarsmonth)) 
@@ -128,15 +128,50 @@ ggplot(food.month.18,mapping=aes(x=MONTH.C,y=sumfood)) +
   geom_point() # big outlier in 2018
 
 
+dat.events <- dat %>% group_by(MONTH.C,YEAR) %>%
+  mutate(sumevents=length(ID)) %>% ungroup() %>%
+  select(MONTH.C,MONTH,YEAR,sumevents) %>% distinct() 
+
+ggplot(data=dat.events) +
+  geom_boxplot(aes(x=MONTH.C,y=sumevents)) +
+  geom_point(aes(x=MONTH.C,y=sumevents))
 
 #### Question I can definitely talk about: distribution of how long people stay
-#### what happens right before people leave?
 id.range <- unique(dat[,c("ID","rangedays")]) %>%
   mutate(xval="range")
 ggplot(data=id.range,aes(x=rangedays)) +
   geom_histogram(bins=40)
 ggplot(data=id.range[id.range$rangedays>1,],aes(x=rangedays)) +
   geom_histogram(bins=40)
+
+# what month or season is most popular for a first event?
+dat.first <- dat %>% group_by(ID) %>% arrange(DATENUM) %>% 
+  mutate(firstev=MONTH.C[1],
+         season=ifelse(MONTH%in%c(3,4,5),"Spring",
+                       ifelse(MONTH%in%c(6,7,8),"Summer",
+                              ifelse(MONTH%in%c(9,10,11),"Fall","Winter")))) %>%
+  ungroup() %>% select(ID,firstev,season) %>% distinct() 
+ggplot(data=dat.first) + 
+  geom_bar(aes(x=firstev))
+
+###### what month do people receieve their last service? #####
+# including clients with only 1 record
+dat.last1 <- dat %>% group_by(ID) %>% mutate(DATENUM2=as.numeric(strptime(DATENUM,"%Y%m%d"))) %>% 
+  filter(DATENUM2==lastvis) %>% ungroup() 
+# clients with 2 or more
+dat.last <- dat %>% group_by(ID) %>% 
+  mutate(DATENUM2=as.numeric(strptime(DATENUM,"%Y%m%d")),numevents=length(MONTH.C)) %>% 
+  filter(DATENUM2==lastvis & numevents>1 & rangedays>1) %>% ungroup() 
+
+ggplot(data=dat.last1) + # including day 1
+  geom_bar(aes(x=MONTH.C))
+
+ggplot(data=dat.last) + # excluding day 1
+  geom_bar(aes(x=MONTH.C))
+
+# type of service (bus, food, clothes) at last visit vs frequency
+
+
 
 
 
