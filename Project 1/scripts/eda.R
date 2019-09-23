@@ -73,9 +73,9 @@ ggplot(data=dat[dat$`Financial Support`>0,]) +
 
   
 # financial support pretty constant over months (spending per person per month for those with financial supprt > 0)
-dat1 <- dat %>% group_by(ID,MONTH.C) %>% #calculate total dollars per month per person
+dat1.fin <- dat %>% group_by(ID,MONTH.C) %>% #calculate total dollars per month per person
   mutate(dollarsmonth=sum(`Financial Support`)) %>% ungroup()
-dat.dm <- dat1 %>% select(MONTH.C,ID,dollarsmonth) %>% distinct() %>% filter(dollarsmonth>0)
+dat.dm <- dat.fin %>% select(MONTH.C,ID,dollarsmonth) %>% distinct() %>% filter(dollarsmonth>0)
 ggplot(data=dat.dm) +
   geom_boxplot(aes(x=MONTH.C,y=dollarsmonth)) +
   geom_point(aes(x=MONTH.C,y=dollarsmonth)) 
@@ -136,25 +136,40 @@ ggplot(data=dat.events) +
   geom_boxplot(aes(x=MONTH.C,y=sumevents)) +
   geom_point(aes(x=MONTH.C,y=sumevents))
 
-#### Question I can definitely talk about: distribution of how long people stay
-id.range <- unique(dat[,c("ID","rangedays")]) %>%
-  mutate(xval="range")
+#### distribution of how long people stay
+id.range <-dat[,c("ID","rangedays")] %>% mutate(sumevents=length(ID)) %>% ungroup() %>%
+  select(ID,sumevents) %>% distinct()
 ggplot(data=id.range,aes(x=rangedays)) +
   geom_histogram(bins=40)
 ggplot(data=id.range[id.range$rangedays>1,],aes(x=rangedays)) +
+  geom_histogram(bins=40) +
+  geom_vline(aes(xintercept=mean(rangedays))) +
+  geom_vline(aes(xintercept=median(rangedays)))
+
+#### distribution of number of events (number of days on which they received services)
+id.events <- dat %>% group_by(ID) %>% mutate(sumevents=length(ID)) %>% ungroup() %>%
+  select(ID,sumevents) %>% distinct()
+
+#plot all data
+ggplot(data=id.events,aes(x=sumevents)) +
   geom_histogram(bins=40)
 
+#plot up to the 0.99 quantile
+ggplot(data=id.events[id.events$sumevents<51,],aes(x=sumevents)) +
+  geom_histogram(bins=40) +
+  geom_vline(aes(xintercept=mean(sumevents))) +
+  geom_vline(aes(xintercept=median(sumevents)))
+
+
+
 # what month or season is most popular for a first event?
-dat.first <- dat %>% group_by(ID) %>% arrange(DATENUM) %>% 
-  mutate(firstev=MONTH.C[1],
-         season=ifelse(MONTH%in%c(3,4,5),"Spring",
-                       ifelse(MONTH%in%c(6,7,8),"Summer",
-                              ifelse(MONTH%in%c(9,10,11),"Fall","Winter")))) %>%
-  ungroup() %>% select(ID,firstev,season) %>% distinct() 
-ggplot(data=dat.first) + 
+dat.first1 <- dat %>% group_by(ID) %>% arrange(DATENUM) %>% 
+  mutate(firstev=MONTH.C[1]) %>%
+  ungroup() %>% select(ID,firstev) %>% distinct() 
+ggplot(data=dat.first1) + 
   geom_bar(aes(x=firstev))
 
-###### what month do people receieve their last service? #####
+###### looking into last days #####
 # including clients with only 1 record
 dat.last1 <- dat %>% group_by(ID) %>% mutate(DATENUM2=as.numeric(strptime(DATENUM,"%Y%m%d"))) %>% 
   filter(DATENUM2==lastvis) %>% ungroup() 
@@ -163,15 +178,32 @@ dat.last <- dat %>% group_by(ID) %>%
   mutate(DATENUM2=as.numeric(strptime(DATENUM,"%Y%m%d")),numevents=length(MONTH.C)) %>% 
   filter(DATENUM2==lastvis & numevents>1 & rangedays>1) %>% ungroup() 
 
-ggplot(data=dat.last1) + # including day 1
-  geom_bar(aes(x=MONTH.C))
-
+# last day investigation
 ggplot(data=dat.last) + # excluding day 1
   geom_bar(aes(x=MONTH.C))
 
-# type of service (bus, food, clothes) at last visit vs frequency
-
-
+# type of service (bus, finances, hygiene, school) at last visit vs frequency. clothing and food overwhelmingly prevalent
+dat.last.serv <- dat.last %>% 
+  select(ID,DATENUM,MONTH.C,`Bus Tickets (Number of)`,`Food Pounds`,`Food Provided for`,`Clothing Items`,`Hygiene Kits`,`School Kits`,`Financial Support`) %>%
+  gather(`Bus Tickets (Number of)`,`Food Pounds`,`Food Provided for`,`Clothing Items`,`Hygiene Kits`,`School Kits`,`Financial Support`,key="typeof",value="value") %>%
+  filter(!is.na(value) & value >0) %>%
+  mutate(typeof=ifelse(grepl("Food",typeof),"Food",typeof)) %>% #consolidate food into 1 category
+  mutate(value=ifelse(is.na(value),"","yes")) %>% distinct() %>%
+  filter(typeof!="Clothing Items" & typeof!="Food")
+ggplot(data=dat.last.serv) +
+  geom_bar(mapping = aes(x = typeof, y = ..prop.., group = 1), stat = "count") +
+  ylim(0,1) 
+# all days
+dat.serv.all <- dat %>% 
+  select(ID,DATENUM,MONTH.C,`Bus Tickets (Number of)`,`Food Pounds`,`Food Provided for`,`Clothing Items`,`Hygiene Kits`,`School Kits`,`Financial Support`) %>%
+  gather(`Bus Tickets (Number of)`,`Food Pounds`,`Food Provided for`,`Clothing Items`,`Hygiene Kits`,`School Kits`,`Financial Support`,key="typeof",value="value") %>%
+  filter(!is.na(value) & value >0) %>%
+  mutate(typeof=ifelse(grepl("Food",typeof),"Food",typeof)) %>% #consolidate food into 1 category
+  mutate(value=ifelse(is.na(value),"","yes")) %>% distinct() %>%
+  filter(typeof!="Clothing Items" & typeof!="Food")
+ggplot(data=dat.serv.all) +
+  geom_bar(mapping = aes(x = typeof, y = ..prop.., group = 1), stat = "count") +
+  ylim(0,1)
 
 
 
