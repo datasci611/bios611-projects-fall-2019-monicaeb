@@ -60,16 +60,22 @@ dat <- dat %>% group_by(ID) %>%
 # dollars per month spent pretty constant
 dat.dm <- unique(dat[,c("YEAR","MONTH.C","dollars.m.y")])  %>% 
   filter(YEAR%in%c(2002:2008))
-ggplot(data=dat.dm) +
-  geom_boxplot(aes(x=MONTH.C,y=dollars.m.y)) +
-  geom_point(aes(x=MONTH.C,y=dollars.m.y)) 
-
+p<-ggplot(data=dat.dm) +
+  geom_boxplot(aes(x=MONTH.C,y=dollars.m.y),color="darkslategray") +
+  geom_point(aes(x=MONTH.C,y=dollars.m.y),color="darkolivegreen") +
+  theme_minimal() +
+  labs(title="Total Financial Assistance by Month",x="Month",y="Dollars")
+ggsave(plot=p,"C:\\Users\\Monica Borges\\OneDrive - University of North Carolina at Chapel Hill\\BIOS 611\\GitHub Resources\\bios611-projects-fall-2019-monicaeb\\Project 1\\results\\dollars.month.box.png")
 
 # how has the number of clients grown over the years?
 #use uptick in clients as an introduction
 dat.id <- dat %>% select(YEAR,sumID.yr) %>% distinct()
 ggplot(dat.id,mapping=aes(x=YEAR,y=sumID.yr)) +
-  geom_point(color="darkorchid4")
+  geom_point(color="darkorchid4") +
+  theme_minimal() +
+  labs(title="Total Clients Receiving Service",x="Year",y="Number of Clients")
+ggsave(plot=p,"C:\\Users\\Monica Borges\\OneDrive - University of North Carolina at Chapel Hill\\BIOS 611\\GitHub Resources\\bios611-projects-fall-2019-monicaeb\\Project 1\\results\\dolars.month.box.png")
+
 
 ## incidence of new clients each month
 dat.new.id.m <- dat %>% select(ID,MONTH,DAY,MONTH.C,YEAR,DATENUM) %>% arrange(ID,DATENUM) %>%
@@ -79,6 +85,7 @@ dat.new.id.m <- dat %>% select(ID,MONTH,DAY,MONTH.C,YEAR,DATENUM) %>% arrange(ID
 ggplot(dat.new.id.m,mapping=aes(x=MONTH.C,y=new.ids)) +
   geom_point(color="darkorchid4") +
   geom_boxplot()
+
 
 dat.id.food <- dat %>% select(YEAR,sumID.yr,sumfood.yr) %>% distinct()
 # ggplot(dat.id.food,mapping=aes(x=YEAR,y=sumfood.yr)) +
