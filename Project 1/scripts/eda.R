@@ -4,6 +4,7 @@
 
 library(tidyverse)
 library(tools) #for text manipulation
+library(lme4)
 
 # read in data, tab separated
 dat.orig <- read_delim("C:\\Users\\Monica Borges\\OneDrive - University of North Carolina at Chapel Hill\\BIOS 611\\GitHub Resources\\Projects\\Project 1\\data\\umd.txt",delim="\t")
@@ -45,25 +46,23 @@ dat <- dat %>% group_by(ID) %>%
    mutate(dollars.m.ind=sum(`Financial Support`)) %>% ungroup() %>%
    group_by(MONTH.C,YEAR) %>% 
    mutate(dollars.m.y=sum(`Financial Support`), #total dollars per month in financial assistance
-          events.m.y=length(ID)) %>% # total events per month
+          events.m.y=length(ID),
+          foodlbs.m.y=sum(`Food Pounds`,na.rm=TRUE),
+          id.m.y=length(unique(ID))) %>% # total per month
    ungroup() %>% group_by(YEAR) %>%
    mutate(sumID.yr=length(unique(ID)),
-          sumfood.yr=sum(`Food Pounds`,na.rm=TRUE)) %>%
+          sumfood.yr=sum(`Food Pounds`,na.rm=TRUE),
+          dollars.yr=sum(`Financial Support`,na.rm=TRUE)) %>%
    ungroup() %>% group_by(ID) %>%
    mutate(sumevents.ID=length(ID)) %>% ungroup()
 
 ### subsets and plots ### 
 # dollars per month spent pretty constant
-dat.dm <- unique(dat[,c("MONTH.C","dollars.m.y")])
+dat.dm <- unique(dat[,c("MONTH.C","dollars.m.y")]) 
 ggplot(data=dat.dm) +
   geom_boxplot(aes(x=MONTH.C,y=dollars.m.y)) +
   geom_point(aes(x=MONTH.C,y=dollars.m.y)) 
 
-# pretty consistent number of events per month, june looks is a little more active
-dat.events <- dat %>% select(MONTH.C,MONTH,YEAR,events.m.y) %>% distinct() 
-ggplot(data=dat.events) +
-  geom_boxplot(aes(x=MONTH.C,y=events.m.y)) +
-  geom_point(aes(x=MONTH.C,y=events.m.y))
 
 # how has the number of clients grown over the years?
 #use uptick in clients as an introduction
@@ -74,6 +73,43 @@ ggplot(dat.id,mapping=aes(x=YEAR,y=sumID.yr)) +
 dat.id.food <- dat %>% select(YEAR,sumID.yr,sumfood.yr) %>% distinct()
 ggplot(dat.id.food,mapping=aes(x=YEAR,y=sumfood.yr)) +
   geom_point() # big outlier in 2018 removed above
+
+#total food lbs by month and year
+dat.food.month <- dat %>% select(YEAR,MONTH,foodlbs.m.y,id.m.y) %>% distinct() %>%
+  mutate(YEARMONTH=as.numeric(paste0(YEAR,MONTH)))
+ggplot(data = dat.food.month,aes(x=YEARMONTH,y=foodlbs.m.y)) +
+  geom_point() +
+  xlim(200500,201900) +
+  geom_smooth(method="lm")
+
+# create linear model for food lbs per month ~ people served per month
+glm(data=dat.food.month,foodlbs.m.y ~ id.m.y)
+aov(data = dat.food.month,foodlbs.m.y ~ id.m.y)
+
+ggplot(data=dat.food.month) +
+  geom_point(aes(x=id.m.y,y=foodlbs.m.y))
+
+ggplot(data=dat.food.month[dat.food.month$foodlbs.m.y>0,],aes(x=id.m.y,y=foodlbs.m.y)) +
+  geom_point()+
+  stat_smooth_func(geom="text",method="lm",hjust=0,parse=TRUE)  +
+  geom_smooth(se=FALSE,method="lm") +
+  ylim(c(0,20000))
+
+# financial not really useful
+dat.fin.cli.yr <- dat %>% select(YEAR,sumID.yr,dollars.yr) %>% distinct() %>% 
+  filter(YEAR%in%c(2002:2008))
+dat.id.fin <- dat %>% select(YEAR,sumID.yr) %>% 
+  distinct() %>% filter(YEAR%in%c(2002:2008))
+ggplot(data=dat.fin.cli.yr) +
+  geom_point(aes(x=YEAR,y=dollars.yr))
+ggplot(data=dat.id.fin) +
+  geom_point(aes(x=YEAR,y=sumID.yr))
+
+# pretty consistent number of events per month, june looks is a little more active
+dat.events <- dat %>% select(MONTH.C,MONTH,YEAR,events.m.y) %>% distinct() 
+ggplot(data=dat.events) +
+  geom_boxplot(aes(x=MONTH.C,y=events.m.y)) +
+  geom_point(aes(x=MONTH.C,y=events.m.y))
 
 dat.events <- dat %>% select(MONTH.C,MONTH,YEAR,events.m.y) %>% distinct() 
 ggplot(data=dat.events) +
@@ -114,7 +150,6 @@ ggplot(data=dat.first1) +
 # including clients with only 1 record
 dat.last1 <- dat %>% group_by(ID) %>% mutate(DATENUM2=as.numeric(strptime(DATENUM,"%Y%m%d"))) %>% 
   filter(DATENUM2==lastvis) %>% ungroup() 
-
 # people with 2 or more distinct days
 dat.last <- dat %>% group_by(ID) %>% 
   mutate(DATENUM2=as.numeric(strptime(DATENUM,"%Y%m%d")),numevents=length(MONTH.C)) %>% 
