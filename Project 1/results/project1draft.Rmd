@@ -8,9 +8,31 @@ output: html_document
 ### Project 1: Urban Ministries Durham
 ##### Monica E. Borges for BIOS 611
 
+##### Goals of this analysis:
+* To describe the growth that UMD has experienced in recent years
+* To capture trends about when people are coming and going
+* To capture visualize a need associated with increasing visitors: food supply
+
+
 ##### The number of people served at UMD has grown annually.
 
+Plot of increase in clients by year
 
+Plot of new clients by month
+
+##### How many services do clients receieve, and how long do they "stay"?
+
+Histogram of number of 'events' per client
+
+Histogram of range of days between first and last visit
+
+##### When do people have their last visit?
+
+
+##### What happens around the last visit?
+Nothing different from other events, actually. Food is overwhelmingly important! 
+
+##### Food regression line
 
 
 

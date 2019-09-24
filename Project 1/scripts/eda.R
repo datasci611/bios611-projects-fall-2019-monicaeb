@@ -43,9 +43,9 @@ dat <- dat %>% group_by(ID) %>%
 
 # compute useful variables for plots
  dat <- dat %>% group_by(ID,MONTH.C,YEAR) %>% #calculate dollars per month per person
-   mutate(dollars.m.ind=sum(`Financial Support`)) %>% ungroup() %>%
+   mutate(dollars.m.ind=sum(`Financial Support`,na.rm=TRUE)) %>% ungroup() %>%
    group_by(MONTH.C,YEAR) %>% 
-   mutate(dollars.m.y=sum(`Financial Support`), #total dollars per month in financial assistance
+   mutate(dollars.m.y=sum(`Financial Support`,na.rm=TRUE), #total dollars per month in financial assistance
           events.m.y=length(ID),
           foodlbs.m.y=sum(`Food Pounds`,na.rm=TRUE),
           id.m.y=length(unique(ID))) %>% # total per month
@@ -56,9 +56,10 @@ dat <- dat %>% group_by(ID) %>%
    ungroup() %>% group_by(ID) %>%
    mutate(sumevents.ID=length(ID)) %>% ungroup()
 
-### subsets and plots ### 
+### subsets and plots to use### 
 # dollars per month spent pretty constant
-dat.dm <- unique(dat[,c("MONTH.C","dollars.m.y")]) 
+dat.dm <- unique(dat[,c("YEAR","MONTH.C","dollars.m.y")])  %>% 
+  filter(YEAR%in%c(2002:2008))
 ggplot(data=dat.dm) +
   geom_boxplot(aes(x=MONTH.C,y=dollars.m.y)) +
   geom_point(aes(x=MONTH.C,y=dollars.m.y)) 
@@ -68,19 +69,28 @@ ggplot(data=dat.dm) +
 #use uptick in clients as an introduction
 dat.id <- dat %>% select(YEAR,sumID.yr) %>% distinct()
 ggplot(dat.id,mapping=aes(x=YEAR,y=sumID.yr)) +
-  geom_point(aes(color=YEAR))
+  geom_point(color="darkorchid4")
+
+## incidence of new clients each month
+dat.new.id.m <- dat %>% select(ID,MONTH,DAY,MONTH.C,YEAR,DATENUM) %>% arrange(ID,DATENUM) %>%
+  group_by(ID) %>% filter(DATENUM==min(DATENUM)) %>% ungroup() %>% #keep first instance of each subject
+  group_by(MONTH.C,YEAR) %>% mutate(new.ids=length(unique(ID))) %>% ungroup() %>%
+  select(new.ids,YEAR,MONTH,MONTH.C) %>% distinct()
+ggplot(dat.new.id.m,mapping=aes(x=MONTH.C,y=new.ids)) +
+  geom_point(color="darkorchid4") +
+  geom_boxplot()
 
 dat.id.food <- dat %>% select(YEAR,sumID.yr,sumfood.yr) %>% distinct()
-ggplot(dat.id.food,mapping=aes(x=YEAR,y=sumfood.yr)) +
-  geom_point() # big outlier in 2018 removed above
+# ggplot(dat.id.food,mapping=aes(x=YEAR,y=sumfood.yr)) +
+#   geom_point() # big outlier in 2018 removed above
 
 #total food lbs by month and year
 dat.food.month <- dat %>% select(YEAR,MONTH,foodlbs.m.y,id.m.y) %>% distinct() %>%
   mutate(YEARMONTH=as.numeric(paste0(YEAR,MONTH)))
-ggplot(data = dat.food.month,aes(x=YEARMONTH,y=foodlbs.m.y)) +
-  geom_point() +
-  xlim(200500,201900) +
-  geom_smooth(method="lm")
+# ggplot(data = dat.food.month,aes(x=YEARMONTH,y=foodlbs.m.y)) +
+#   geom_point() +
+#   xlim(200500,201900) +
+#   geom_smooth(method="lm")
 
 # create linear model for food lbs per month ~ people served per month
 glm(data=dat.food.month,foodlbs.m.y ~ id.m.y)
@@ -91,7 +101,6 @@ ggplot(data=dat.food.month) +
 
 ggplot(data=dat.food.month[dat.food.month$foodlbs.m.y>0,],aes(x=id.m.y,y=foodlbs.m.y)) +
   geom_point()+
-  stat_smooth_func(geom="text",method="lm",hjust=0,parse=TRUE)  +
   geom_smooth(se=FALSE,method="lm") +
   ylim(c(0,20000))
 
