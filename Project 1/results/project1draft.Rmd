@@ -1,48 +1,61 @@
 ---
-title: "Project 1"
-author: "Monica E Borges"
-date: "9/23/2019"
+#title: "Project 1"
+#author: "Monica E Borges"
+#date: "9/23/2019"
 output: html_document
 ---
 
 ### Project 1: Urban Ministries Durham
-##### Monica E. Borges for BIOS 611
+
+<img src="http://www.umdurham.org/assets/images/logo-new1.png" width=30%>
+
+###### Monica E. Borges, BIOS 611
+
+<br>
+
+##### Data source
+[Urban Ministries Durham](http://www.umdurham.org/) (UMD) was founded in 1983 and has since served thousands of people in the area in efforts to combat homelessness. The source dataset for this analysis contained 79838 records and 13 variables. For the purposes of this investigation, to focus on data collected since UMD has been operating as a campus, the dataset for analysis includes information from 2001 - 2018, a total of of 75573 records.
+<br>
 
 ##### Goals of this analysis:
 * To describe the growth that UMD has experienced in recent years
 * To capture trends about when people are coming and going
 * To capture visualize a need associated with increasing visitors: food supply
-
-##### Data source
-Urban Ministries Durham was founded in x year and has served thousands of people in the area in efforts to combat homelessness. The source dataset for this analysis contained x records and x variables. For the purposes of this investigation, the dataset was subset to include the last two decades, for a total of x records.
+<br>
 
 ##### The number of people served at UMD has grown annually.
-Between 1998 and 2018, UMD has seen an overall increase in number of people served. The number of visitors from 1998 - 2002 sharply increased from x to x. Since 2002, we have seen a steadier increase, with x more total clients added over a greater stretch of time. <br>
-<br> <img src="clients.year.point.png" width=50%/><br>
+Between 1998 and 2018, UMD has seen an overall increase in number of people served. The number of visitors from 1998 - 2002 sharply increased from x to x. Since 2002, we have seen a steadier increase, with x more total clients added over a greater stretch of time. 
+<br> <img src="clients.year.point.png" width=65%/><br>
 The increase in overall visitors may be attributed to a combination of increased resources at UMD, increased awareness, and increased need in the area. 
+<br>
 
 As displayed below, the number of new clients per month is relatively constant.
-,br> <img src="new.ids.month.box.png" width=50%/><br>
+<br> <img src="new.ids.month.box.png" width=65%/><br>
 This plot displays the distribution in the number of new visitors per month over the last 20 years. For example, March averages about 60 new clients per month in the past two decades. October sees the highest number of monthly new clients, and April sees the lowest, though the overlapping box plots do not indicate a statistically significant difference. 
+<br>
 
 ##### How many services do clients receieve, and how long do they "stay"?
 People staying at or passing through UMD can receive several different types of services. The Number of services described in the histogram below is the number of times someone received food, clothing, bus passes, hygiene kit, school supplies, or diapers. 
-<br> <img src="serv.hist.95.png" width=50%/> <br>
-The median number of services is 2, and the mean is 8.12. Because most clients have only 1 visit, fewer stay longer or return to UMD, so the distribution of number of services per client is skewed right.
+<br> <img style="float:left" src="serv.hist.95.png" width=65%/> 
+The median number of services is 2, and the mean is 8.12. As many clients (n=6646) have only 1 recorded datevisit, fewer stay longer or return to UMD, so the distribution of number of services per client is skewed right. This distribution is displayed up to the 0.95 quantile in order to see the lower end of the distribution in better detail.
+<br>
 
-
-Histogram of range of days between first and last visit
-<img src="days.range.hist.png" width=50%/>
+The range of days between a client's first and last visit, similarly to the number of services they seek, is skewed to the right.
+<img style="float:right" src="days.range.hist.png" width=65%/>
+<br>
 
 ##### When do people have their last visit?
-<img src="last.ids.month.box.png" width=50%/>
+<img src="last.ids.month.box.png" width=65%/>
+<br>
 
 ##### What happens around the last visit?
 Nothing too different from other events, actually. Food is overwhelmingly important! When we take food and clothing out of the equation, there is a slight difference. <br>
 <img style="float:left" src="all.serv.png" width=50%/><img src="last.serv.png" width=50%/>
+<br>
 
 ##### Food regression line
 Food pounds diestributed from the pantry and number of clients served are, perhaps unsurprisingly, closely associated. The following plot by month excludes months during which food pounds are missing from the source data. 
+<br>
 
 ##### Conclusions
 Urban ministries has steadily provided services

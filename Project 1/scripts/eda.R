@@ -29,7 +29,7 @@ dat <- dat %>% mutate(DATENUM=format(strptime(Date,"%m/%d/%Y"),"%Y%m%d"),
 # big outlier in 2018: client #12943 had 450121 pounds which is probably not right
 # also filter for last 20 years, some worrisome erroneous data before.
 dat <- dat %>% filter(`Food Pounds`<450121 | is.na(`Food Pounds`),
-                      YEAR>1998 & YEAR<2019)
+                      YEAR>2000 & YEAR<2019)
 
 #order months for plots by month
 dat$MONTH.C <- factor(dat$MONTH.C,levels=c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
@@ -173,7 +173,7 @@ ggplot(data=id.events,aes(x=sumevents.ID)) +
 median(id.events$sumevents.ID)
 mean(id.events$sumevents.ID)
 p<-ggplot(data=id.events[id.events$sumevents.ID<quantile(id.events$sumevents.ID,0.95),],aes(x=sumevents.ID)) +
-  geom_histogram(bins=20,fill="snow3",color="snow4") +
+  geom_histogram(bins=15,fill="snow3",color="snow4") +
   geom_vline(aes(xintercept=mean(sumevents.ID)),color="slateblue3") +
   geom_vline(aes(xintercept=median(sumevents.ID)),color="slateblue4") +
   theme_minimal() + labs(title="Histogram of Number of Services (up to 0.95 quantile) \nProvided per Client",x="Number of Services",y="Count")
