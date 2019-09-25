@@ -68,23 +68,25 @@ p<-ggplot(data=dat.dm) +
 ggsave(plot=p,"C:\\Users\\Monica Borges\\OneDrive - University of North Carolina at Chapel Hill\\BIOS 611\\GitHub Resources\\bios611-projects-fall-2019-monicaeb\\Project 1\\results\\dollars.month.box.png")
 
 # how has the number of clients grown over the years?
-#use uptick in clients as an introduction
+# use uptick in clients as an introduction
 dat.id <- dat %>% select(YEAR,sumID.yr) %>% distinct()
-ggplot(dat.id,mapping=aes(x=YEAR,y=sumID.yr)) +
+p <- ggplot(dat.id,mapping=aes(x=YEAR,y=sumID.yr)) +
   geom_point(color="darkorchid4") +
   theme_minimal() +
   labs(title="Total Clients Receiving Service",x="Year",y="Number of Clients")
-ggsave(plot=p,"C:\\Users\\Monica Borges\\OneDrive - University of North Carolina at Chapel Hill\\BIOS 611\\GitHub Resources\\bios611-projects-fall-2019-monicaeb\\Project 1\\results\\dolars.month.box.png")
-
+ggsave(plot=p,"C:\\Users\\Monica Borges\\OneDrive - University of North Carolina at Chapel Hill\\BIOS 611\\GitHub Resources\\bios611-projects-fall-2019-monicaeb\\Project 1\\results\\clients.year.point.png")
 
 ## incidence of new clients each month
 dat.new.id.m <- dat %>% select(ID,MONTH,DAY,MONTH.C,YEAR,DATENUM) %>% arrange(ID,DATENUM) %>%
   group_by(ID) %>% filter(DATENUM==min(DATENUM)) %>% ungroup() %>% #keep first instance of each subject
   group_by(MONTH.C,YEAR) %>% mutate(new.ids=length(unique(ID))) %>% ungroup() %>%
   select(new.ids,YEAR,MONTH,MONTH.C) %>% distinct()
-ggplot(dat.new.id.m,mapping=aes(x=MONTH.C,y=new.ids)) +
+p<-ggplot(dat.new.id.m,mapping=aes(x=MONTH.C,y=new.ids)) +
   geom_point(color="darkorchid4") +
-  geom_boxplot()
+  geom_boxplot() +
+  theme_minimal() +
+  labs(title="New Clients by Month",x="Month",y="Number of New Clients")
+ggsave(plot=p,"C:\\Users\\Monica Borges\\OneDrive - University of North Carolina at Chapel Hill\\BIOS 611\\GitHub Resources\\bios611-projects-fall-2019-monicaeb\\Project 1\\results\\new.ids.month.box.png")
 
 
 dat.id.food <- dat %>% select(YEAR,sumID.yr,sumfood.yr) %>% distinct()
@@ -103,13 +105,19 @@ dat.food.month <- dat %>% select(YEAR,MONTH,foodlbs.m.y,id.m.y) %>% distinct() %
 glm(data=dat.food.month,foodlbs.m.y ~ id.m.y)
 aov(data = dat.food.month,foodlbs.m.y ~ id.m.y)
 
-ggplot(data=dat.food.month) +
-  geom_point(aes(x=id.m.y,y=foodlbs.m.y))
+p<-ggplot(data=dat.food.month) +
+  geom_point(aes(x=id.m.y,y=foodlbs.m.y),color="steelblue") +
+  theme_minimal() +
+  labs(title="Monthly Pounds of Food by Number of Clients",x="Number of Clients",y="Food (lbs) given")
+ggsave(plot=p,"C:\\Users\\Monica Borges\\OneDrive - University of North Carolina at Chapel Hill\\BIOS 611\\GitHub Resources\\bios611-projects-fall-2019-monicaeb\\Project 1\\results\\food.id.all.scat.png")
 
-ggplot(data=dat.food.month[dat.food.month$foodlbs.m.y>0,],aes(x=id.m.y,y=foodlbs.m.y)) +
-  geom_point()+
-  geom_smooth(se=FALSE,method="lm") +
-  ylim(c(0,20000))
+p<-ggplot(data=dat.food.month[dat.food.month$foodlbs.m.y>0,],aes(x=id.m.y,y=foodlbs.m.y)) +
+  geom_point(color="steelblue")+
+  geom_smooth(se=FALSE,method="lm",color="lightsteelblue4") +
+  ylim(c(0,20000)) +
+  theme_minimal() +
+  labs(title="Monthly Pounds of Food (>0) by Number of Clients",x="Number of Clients",y="Food (lbs) given")
+ggsave(plot=p,"C:\\Users\\Monica Borges\\OneDrive - University of North Carolina at Chapel Hill\\BIOS 611\\GitHub Resources\\bios611-projects-fall-2019-monicaeb\\Project 1\\results\\food.id.reg.scat.png")
 
 # financial not really useful
 dat.fin.cli.yr <- dat %>% select(YEAR,sumID.yr,dollars.yr) %>% distinct() %>% 
@@ -127,19 +135,16 @@ ggplot(data=dat.events) +
   geom_boxplot(aes(x=MONTH.C,y=events.m.y)) +
   geom_point(aes(x=MONTH.C,y=events.m.y))
 
-dat.events <- dat %>% select(MONTH.C,MONTH,YEAR,events.m.y) %>% distinct() 
-ggplot(data=dat.events) +
-  geom_boxplot(aes(x=MONTH.C,y=events.m.y)) +
-  geom_point(aes(x=MONTH.C,y=events.m.y))
-
 #### distribution of how long people stay
 id.range <- dat %>% select(ID,rangedays) %>% distinct()
 ggplot(data=id.range,aes(x=rangedays)) +
   geom_histogram(bins=40)
-ggplot(data=id.range[id.range$rangedays>1,],aes(x=rangedays)) +
-  geom_histogram(bins=40) +
-  geom_vline(aes(xintercept=mean(rangedays))) +
-  geom_vline(aes(xintercept=median(rangedays)))
+p<-ggplot(data=id.range[id.range$rangedays>1,],aes(x=rangedays)) +
+  geom_histogram(bins=40,fill="snow3",color="snow4") +
+  geom_vline(aes(xintercept=mean(rangedays)),color="darkgreen") +
+  geom_vline(aes(xintercept=median(rangedays)),color="seagreen") +
+  theme_minimal() + labs(title="Histogram of Range of Days (>1) per Client",x="Range of days from first to last visit",y="Count")
+ggsave(plot=p,"C:\\Users\\Monica Borges\\OneDrive - University of North Carolina at Chapel Hill\\BIOS 611\\GitHub Resources\\bios611-projects-fall-2019-monicaeb\\Project 1\\results\\days.range.hist.png")
 
 #### distribution of number of events (number of days on which they received services)
 id.events <- dat %>% select(ID,sumevents.ID) %>% distinct()
@@ -149,18 +154,20 @@ ggplot(data=id.events,aes(x=sumevents.ID)) +
   geom_histogram(bins=40)
 
 #plot up to the 0.95 quantile
-ggplot(data=id.events[id.events$sumevents.ID<quantile(id.events$sumevents.ID,0.95),],aes(x=sumevents.ID)) +
-  geom_histogram(bins=20) +
-  geom_vline(aes(xintercept=mean(sumevents.ID))) +
-  geom_vline(aes(xintercept=median(sumevents.ID)))
+p<-ggplot(data=id.events[id.events$sumevents.ID<quantile(id.events$sumevents.ID,0.95),],aes(x=sumevents.ID)) +
+  geom_histogram(bins=20,fill="snow3",color="snow4") +
+  geom_vline(aes(xintercept=mean(sumevents.ID)),color="slateblue3") +
+  geom_vline(aes(xintercept=median(sumevents.ID)),color="slateblue4") +
+  theme_minimal() + labs(title="Histogram of Number of Services (up to 0.95 quantile) \nProvided per Client",x="Number of Services",y="Count")
+ggsave(plot=p,"C:\\Users\\Monica Borges\\OneDrive - University of North Carolina at Chapel Hill\\BIOS 611\\GitHub Resources\\bios611-projects-fall-2019-monicaeb\\Project 1\\results\\serv.hist.95.png")
 
 ### plots by first and last events ###
 # what month or season is most popular for a first event?
-dat.first1 <- dat %>% group_by(ID) %>% arrange(DATENUM) %>% 
-  mutate(firstev=MONTH.C[1]) %>%
-  ungroup() %>% select(ID,firstev) %>% distinct() 
-ggplot(data=dat.first1) + 
-  geom_bar(aes(x=firstev))
+# dat.first1 <- dat %>% group_by(ID) %>% arrange(DATENUM) %>% 
+#   mutate(firstev=MONTH.C[1]) %>%
+#   ungroup() %>% select(ID,firstev) %>% distinct() 
+# ggplot(data=dat.first1) + 
+#   geom_bar(aes(x=firstev))
 
 #### looking into last days ###
 # including clients with only 1 record
@@ -170,10 +177,20 @@ dat.last1 <- dat %>% group_by(ID) %>% mutate(DATENUM2=as.numeric(strptime(DATENU
 dat.last <- dat %>% group_by(ID) %>% 
   mutate(DATENUM2=as.numeric(strptime(DATENUM,"%Y%m%d")),numevents=length(MONTH.C)) %>% 
   filter(DATENUM2==lastvis & numevents>1 & rangedays>1) %>% ungroup() 
-
 # last day investigation
 ggplot(data=dat.last) + # excluding day 1
   geom_bar(aes(x=MONTH.C))
+
+dat.last.m <- dat %>% select(ID,MONTH,DAY,MONTH.C,YEAR,DATENUM) %>% arrange(ID,DATENUM) %>%
+  group_by(ID) %>% filter(DATENUM==max(DATENUM)) %>% ungroup() %>% #keep first instance of each subject
+  group_by(MONTH.C,YEAR) %>% mutate(ids.last=length(unique(ID))) %>% ungroup() %>%
+  select(new.ids,YEAR,MONTH,MONTH.C) %>% distinct()
+p<-ggplot(dat.last.m,mapping=aes(x=MONTH.C,y=ids.last)) +
+  geom_point(color="darkorchid4") +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(title="Last Visits by Month",x="Month",y="Number of Last Visits")
+ggsave(plot=p,"C:\\Users\\Monica Borges\\OneDrive - University of North Carolina at Chapel Hill\\BIOS 611\\GitHub Resources\\bios611-projects-fall-2019-monicaeb\\Project 1\\results\\new.ids.month.box.png")
 
 # type of service (bus, finances, hygiene, school) at last visit vs frequency. clothing and food overwhelmingly prevalent
 dat.last.serv <- dat.last %>% 

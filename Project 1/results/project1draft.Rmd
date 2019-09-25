@@ -23,7 +23,7 @@ Plot of new clients by month
 ##### How many services do clients receieve, and how long do they "stay"?
 
 Histogram of number of 'events' per client
-
+ 
 Histogram of range of days between first and last visit
 
 ##### When do people have their last visit?
