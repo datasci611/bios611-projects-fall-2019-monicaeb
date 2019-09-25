@@ -15,27 +15,33 @@ output: html_document
 
 
 ##### The number of people served at UMD has grown annually.
-
 Plot of increase in clients by year
+<img src="clients.year.point.png" width=50%/>
 
 Plot of new clients by month
+<img src="new.ids.month.box.png" width=50%/>
 
 ##### How many services do clients receieve, and how long do they "stay"?
 
 Histogram of number of 'events' per client
- 
+ <img src="serv.hist.95.png" width=50%/>
+
 Histogram of range of days between first and last visit
+<img src="days.range.hist.png" width=50%/>
 
 ##### When do people have their last visit?
-
+<img src="last.ids.month.box.png" width=50%/>
 
 ##### What happens around the last visit?
-Nothing different from other events, actually. Food is overwhelmingly important! 
+Nothing too different from other events, actually. Food is overwhelmingly important! When we take food and clothing out of the equation, there is a slight difference. <br>
+<img style="float:left" src="all.serv.png" width=50%/><img src="last.serv.png" width=50%/>
 
 ##### Food regression line
+Food pounds diestributed from the pantry and number of clients served are, perhaps unsurprisingly, closely associated. The following plot by month excludes months during which food pounds are missing from the source data. 
 
-
-
+##### Conclusions
+Urban ministries has steadily provided services
+Urban ministries has momentum and is on track to continue serving DUrham individuals. It will not be surprising if food needs increase with an increase in clients. 
 
 
 
