@@ -46,16 +46,32 @@ dat <- dat %>% group_by(ID) %>%
    mutate(dollars.m.ind=sum(`Financial Support`,na.rm=TRUE)) %>% ungroup() %>%
    group_by(MONTH.C,YEAR) %>% 
    mutate(dollars.m.y=sum(`Financial Support`,na.rm=TRUE), #total dollars per month in financial assistance
-          events.m.y=length(ID),
           foodlbs.m.y=sum(`Food Pounds`,na.rm=TRUE),
           id.m.y=length(unique(ID))) %>% # total per month
    ungroup() %>% group_by(YEAR) %>%
    mutate(sumID.yr=length(unique(ID)),
           sumfood.yr=sum(`Food Pounds`,na.rm=TRUE),
           dollars.yr=sum(`Financial Support`,na.rm=TRUE)) %>%
-   ungroup() %>% group_by(ID) %>%
-   mutate(sumevents.ID=length(ID)) %>% ungroup()
+   ungroup()
 
+ # calculate sum of services received by month and sum by id
+ dat <- dat %>% group_by(ID) %>%
+   mutate(sumevents.ID=sum(sum(!is.na(`Bus Tickets (Number of)`) & `Bus Tickets (Number of)`>0),
+                           sum(!is.na(`Food Pounds`) & `Food Pounds`>0 | !is.na(`Food Provided for`) & `Food Provided for`>0),
+                           sum(!is.na(`Clothing Items`) & `Clothing Items`>0),
+                           sum(!is.na(`School Kits`) & `School Kits`>0),
+                           sum(!is.na(Diapers) & Diapers >0),
+                           sum(!is.na(`Financial Support`) & `Financial Support`>0), 
+                           sum(!is.na(`Hygiene Kits`) & `Hygiene Kits`>0))) %>%
+   ungroup() %>% group_by(YEAR,MONTH) %>%
+   mutate(events.m.y=sum(sum(!is.na(`Bus Tickets (Number of)`) & `Bus Tickets (Number of)`>0),
+                          sum(!is.na(`Food Pounds`) & `Food Pounds`>0 | !is.na(`Food Provided for`) & `Food Provided for`>0),
+                          sum(!is.na(`Clothing Items`) & `Clothing Items`>0),
+                          sum(!is.na(`School Kits`) & `School Kits`>0),
+                          sum(!is.na(Diapers) & Diapers >0),
+                          sum(!is.na(`Financial Support`) & `Financial Support`>0), 
+                          sum(!is.na(`Hygiene Kits`) & `Hygiene Kits`>0))) %>% ungroup()
+ 
 ### subsets and plots to use### 
 # dollars per month spent pretty constant
 dat.dm <- unique(dat[,c("YEAR","MONTH.C","dollars.m.y")])  %>% 
@@ -154,6 +170,8 @@ ggplot(data=id.events,aes(x=sumevents.ID)) +
   geom_histogram(bins=40)
 
 #plot up to the 0.95 quantile
+median(id.events$sumevents.ID)
+mean(id.events$sumevents.ID)
 p<-ggplot(data=id.events[id.events$sumevents.ID<quantile(id.events$sumevents.ID,0.95),],aes(x=sumevents.ID)) +
   geom_histogram(bins=20,fill="snow3",color="snow4") +
   geom_vline(aes(xintercept=mean(sumevents.ID)),color="slateblue3") +
