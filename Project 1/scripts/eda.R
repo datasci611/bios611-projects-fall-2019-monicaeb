@@ -184,13 +184,13 @@ ggplot(data=dat.last) + # excluding day 1
 dat.last.m <- dat %>% select(ID,MONTH,DAY,MONTH.C,YEAR,DATENUM) %>% arrange(ID,DATENUM) %>%
   group_by(ID) %>% filter(DATENUM==max(DATENUM)) %>% ungroup() %>% #keep first instance of each subject
   group_by(MONTH.C,YEAR) %>% mutate(ids.last=length(unique(ID))) %>% ungroup() %>%
-  select(new.ids,YEAR,MONTH,MONTH.C) %>% distinct()
-p<-ggplot(dat.last.m,mapping=aes(x=MONTH.C,y=ids.last)) +
+  select(ids.last,YEAR,MONTH,MONTH.C) %>% distinct()
+p<-ggplot(data=dat.last.m[dat.last.m$ids.last<=250,],mapping=aes(x=MONTH.C,y=ids.last)) +
   geom_point(color="darkorchid4") +
   geom_boxplot() +
   theme_minimal() +
   labs(title="Last Visits by Month",x="Month",y="Number of Last Visits")
-ggsave(plot=p,"C:\\Users\\Monica Borges\\OneDrive - University of North Carolina at Chapel Hill\\BIOS 611\\GitHub Resources\\bios611-projects-fall-2019-monicaeb\\Project 1\\results\\new.ids.month.box.png")
+ggsave(plot=p,"C:\\Users\\Monica Borges\\OneDrive - University of North Carolina at Chapel Hill\\BIOS 611\\GitHub Resources\\bios611-projects-fall-2019-monicaeb\\Project 1\\results\\last.ids.month.box.png")
 
 # type of service (bus, finances, hygiene, school) at last visit vs frequency. clothing and food overwhelmingly prevalent
 dat.last.serv <- dat.last %>% 
@@ -200,9 +200,13 @@ dat.last.serv <- dat.last %>%
   mutate(typeof=ifelse(grepl("Food",typeof),"Food",typeof)) %>% #consolidate food into 1 category
   mutate(value=ifelse(is.na(value),"","yes")) %>% distinct() %>%
   filter(typeof!="Clothing Items" & typeof!="Food")
-ggplot(data=dat.last.serv) +
-  geom_bar(mapping = aes(x = typeof, y = ..prop.., group = 1), stat = "count") +
-  ylim(0,1) 
+p<-ggplot(data=dat.last.serv) +
+  geom_bar(mapping = aes(x = typeof, y = ..prop.., group = 1), stat = "count",color="aquamarine4",fill="azure4") +
+  ylim(0,1) + labs(title="Distribution of non-food, non-clothing services among last visits",x="Service",y="Proportion excluding food/clothes") +
+  theme_minimal() 
+ggsave(plot=p,"C:\\Users\\Monica Borges\\OneDrive - University of North Carolina at Chapel Hill\\BIOS 611\\GitHub Resources\\bios611-projects-fall-2019-monicaeb\\Project 1\\results\\last.serv.png")
+
+
 # all days
 dat.serv.all <- dat %>% 
   select(ID,DATENUM,MONTH.C,`Bus Tickets (Number of)`,`Food Pounds`,`Food Provided for`,`Clothing Items`,`Hygiene Kits`,`School Kits`,`Financial Support`) %>%
@@ -211,9 +215,11 @@ dat.serv.all <- dat %>%
   mutate(typeof=ifelse(grepl("Food",typeof),"Food",typeof)) %>% #consolidate food into 1 category
   mutate(value=ifelse(is.na(value),"","yes")) %>% distinct() %>%
   filter(typeof!="Clothing Items" & typeof!="Food")
-ggplot(data=dat.serv.all) +
-  geom_bar(mapping = aes(x = typeof, y = ..prop.., group = 1), stat = "count") +
-  ylim(0,1)
+p<-ggplot(data=dat.serv.all) +
+  geom_bar(aes(x = typeof, y = ..prop.., group = 1), stat = "count",color="cadetblue3",fill="azure4") +
+  ylim(0,1) + labs(title="Distribution of non-food, non-clothing services among all visits",x="Service",y="Proportion excluding food/clothes") +
+  theme_minimal() 
+ggsave(plot=p,"C:\\Users\\Monica Borges\\OneDrive - University of North Carolina at Chapel Hill\\BIOS 611\\GitHub Resources\\bios611-projects-fall-2019-monicaeb\\Project 1\\results\\all.serv.png")
 
 
 
