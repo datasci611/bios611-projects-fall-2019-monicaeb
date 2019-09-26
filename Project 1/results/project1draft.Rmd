@@ -14,17 +14,17 @@ output: html_document
 <br>
 
 ##### Data source
-[Urban Ministries Durham](http://www.umdurham.org/) (UMD) was founded in 1983 and has since served thousands of people in the area in efforts to combat homelessness. The source dataset for this analysis contained 79838 records and 13 variables. For the purposes of this investigation, to focus on data collected since UMD has been operating as a campus, the dataset for analysis includes information from 2001 - 2018, a total of of 75573 records.
+[Urban Ministries Durham](http://www.umdurham.org/) (UMD) was founded in 1983 and has since served thousands of people in the area in efforts to combat homelessness. The source dataset for this analysis contained 79838 records and 18 variables. For the purposes of this investigation, to focus on data collected since UMD has been operating as a campus, the dataset for analysis includes information from 2001 - 2018, a total of of 75573 records.
 <br>
 
-##### Goals of this analysis:
+##### Goals of this report:
 * To describe the growth that UMD has experienced in recent years
 * To capture trends about when people are coming and going
-* To capture visualize a need associated with increasing visitors: food supply
+* To capture a need associated with increasing visitors: food supply
 <br>
 
 ##### The number of people served at UMD has grown annually.
-Between 1998 and 2018, UMD has seen an overall increase in number of people served. The number of visitors from 1998 - 2002 sharply increased from x to x. Since 2002, we have seen a steadier increase, with x more total clients added over a greater stretch of time. 
+Between 2001 and 2018, UMD has seen an overall increase in number of people served.In 2001, 1297 clients were served at UMD, and 6074 people were served in the year 2018. 
 <br> <img src="clients.year.point.png" width=65%/><br>
 The increase in overall visitors may be attributed to a combination of increased resources at UMD, increased awareness, and increased need in the area. 
 <br>
@@ -36,30 +36,32 @@ This plot displays the distribution in the number of new visitors per month over
 
 ##### How many services do clients receieve, and how long do they "stay"?
 People staying at or passing through UMD can receive several different types of services. The Number of services described in the histogram below is the number of times someone received food, clothing, bus passes, hygiene kit, school supplies, or diapers. 
-<br> <img style="float:left" src="serv.hist.95.png" width=65%/> 
-The median number of services is 2, and the mean is 8.12. As many clients (n=6646) have only 1 recorded datevisit, fewer stay longer or return to UMD, so the distribution of number of services per client is skewed right. This distribution is displayed up to the 0.95 quantile in order to see the lower end of the distribution in better detail.
+<br> <img src="serv.hist.95.png" width=65%/> <br>
+The median number of services is 2, and the mean is 8.1. As many clients (n=6656) have only 1 recorded date where they visited, fewer stay longer or return to UMD, so the distribution of number of services per client is skewed right. This distribution is displayed up to the 0.95 quantile in order to see the lower end of the distribution in better detail.
 <br>
 
 The range of days between a client's first and last visit, similarly to the number of services they seek, is skewed to the right.
-<img style="float:right" src="days.range.hist.png" width=65%/>
+<img src="days.range.hist.png" width=65%/>
 <br>
 
-##### When do people have their last visit?
+##### During what time of year do people have their last visit at UMD?
+Similarly to individuals' first visit, there is not a standout month when people tend to have their last visit. 
 <img src="last.ids.month.box.png" width=65%/>
 <br>
+The y-axis above has been truncated to exclude 2 outliers occurring in November-December 2018. I expect that these are current clients or those who recently left UMD, since the data cutoff used here is 2018. 
 
 ##### What happens around the last visit?
-Nothing too different from other events, actually. Food is overwhelmingly important! When we take food and clothing out of the equation, there is a slight difference. <br>
-<img style="float:left" src="all.serv.png" width=50%/><img src="last.serv.png" width=50%/>
+Compared with other instances that clients receive service, the last date is not particularly different. Food and clothing are in overwhelmingly high demand throughout. When we take food and clothing out of the equation, there is a slight difference between services given before and at a person's last visit. <br>
+<img src="all.serv.png" width=50%/><img src="last.serv.png" width=50%/>
 <br>
 
-##### Food regression line
-Food pounds diestributed from the pantry and number of clients served are, perhaps unsurprisingly, closely associated. The following plot by month excludes months during which food pounds are missing from the source data. 
+##### Food pounds increase steadily
+Food pounds distributed from the pantry and number of clients served are, unsurprisingly, closely associated. The following plot by month excludes months during which food pounds are missing from the source data. 
+<br><img src="food.id.reg.scat.png" width=65%/>
 <br>
 
 ##### Conclusions
-Urban ministries has steadily provided services
-Urban ministries has momentum and is on track to continue serving DUrham individuals. It will not be surprising if food needs increase with an increase in clients. 
+Urban ministries has steadily provided services to people in the community since its operation as a campus began in 2001. UMD appears to have momentum in its ability to help clients, and is on track to continue serving Durham individuals. It will not be surprising if food needs continue to increase proportionally with an increase in clients, and new clients can be expected at a relatively constant rate throughout the year.
 
 
 

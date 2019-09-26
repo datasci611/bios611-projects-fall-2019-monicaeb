@@ -17,5 +17,6 @@ Which services may be particularly valuable as client numbers increase in the fu
 Through EDA, identify temporal trends in the data about number of clients served during different months and the average number of services or days per client.
 Data cleaning will be performed to try to minimize erroneous data points and suspicious outliers so as not to thwart trends and detract from the bigger picture.
 
-
+#### Scripts
+eda.R contains data cleaning, variable creation, and plot drafts. 
 
