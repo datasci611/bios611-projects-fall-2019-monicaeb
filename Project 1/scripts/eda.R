@@ -178,9 +178,9 @@ median(id.events$sumevents.ID)
 mean(id.events$sumevents.ID)
 p<-ggplot(data=id.events[id.events$sumevents.ID<quantile(id.events$sumevents.ID,0.95),],aes(x=sumevents.ID)) +
   geom_histogram(bins=16,fill="snow2",color="snow4") +
-  geom_vline(aes(xintercept=mean(sumevents.ID)),color="cornflowerblue") +
-  geom_vline(aes(xintercept=median(sumevents.ID)),color="slateblue4") +
-  theme_minimal() + labs(title="Figure 3. Histogram of Number of Services (up to 0.95 quantile) \nProvided per Client",x="Number of Services",y="Count")
+  geom_vline(aes(xintercept=mean(sumevents.ID)),color="slateblue4") +
+  geom_vline(aes(xintercept=median(sumevents.ID)),color="cornflowerblue") +
+  theme_minimal() + labs(title="Figure 3. Histogram of Number of Services (up to 0.95 quantile) Provided per Client",x="Number of Services",y="Count")
 ggsave(plot=p,"C:\\Users\\Monica Borges\\OneDrive - University of North Carolina at Chapel Hill\\BIOS 611\\GitHub Resources\\bios611-projects-fall-2019-monicaeb\\Project 1\\results\\serv.hist.95.png")
 
 ### plots by first and last events ###
