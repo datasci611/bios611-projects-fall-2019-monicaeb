@@ -17,7 +17,7 @@ output: html_document
 [Urban Ministries Durham](http://www.umdurham.org/) (UMD) was founded in 1983 and has since served thousands of people in the area in efforts to combat homelessness. The source dataset for this analysis contained 79838 records and 18 variables. The purpose of this investigation was to focus on data collected since UMD has been operating as a campus. Therefore, the dataset for analysis includes information from 2001 - 2018, a total of of 75573 records.
 <br>
 
-##### Goals of this report:
+##### Goals
 * To describe the growth that UMD has seen in recent years, since 2001
 * To capture trends about when people are coming and going throughout a calendar year.
 * To illustrate a need associated with increasing visitors over time: the food supply.
