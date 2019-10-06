@@ -2,10 +2,10 @@
 ### Monica Borges
 
 #### Background 
-Urban Ministries of Durham (UMD) has been helping end homelessness in the neighborhood for decades. Through a community shelter, cafe, food pantry, and clothing closet, UMD's efforts have touched and aided over 15,000 lives. 
+[Urban Ministries of Durham](http://umdurham.org/) (UMD) has been helping end homelessness in the neighborhood for decades. Through a community shelter, cafe, food pantry, and clothing closet, UMD's efforts have touched and aided over 15,000 lives. 
 
 #### Source Data
-Raw data provided by the client includes 79,838 records with 18 variables and 15,352 distinct Client ID Numbers.
+Raw data provided by the client includes 79,838 records with 18 variables and 15,352 distinct Client ID Numbers. This dataset is found in the *data* folder.
 Variables describe food pounds, bus tickets, clothing, financial assistance, dates, hygiene kits, diaper distribution, and school supplies kits.
 
 #### Questions to be addressed
@@ -20,3 +20,5 @@ Data cleaning will be performed to try to minimize erroneous data points and sus
 #### Scripts
 eda.R contains data cleaning, variable creation, and plot drafts. 
 
+#### Results
+This folder contains the output html file and plots included in the final presentation. 

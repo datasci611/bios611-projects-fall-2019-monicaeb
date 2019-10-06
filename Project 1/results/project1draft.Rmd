@@ -5,53 +5,55 @@
 output: html_document
 ---
 
-### Project 1: Urban Ministries Durham
+### Project 1: Urban Ministries of Durham
 
 <img src="http://www.umdurham.org/assets/images/logo-new1.png" width=30%>
 
-###### Monica E. Borges, BIOS 611
+###### Monica E. Borges, BIOS 611, Fall 2019
 
 <br>
 
 ##### Data source
-[Urban Ministries Durham](http://www.umdurham.org/) (UMD) was founded in 1983 and has since served thousands of people in the area in efforts to combat homelessness. The source dataset for this analysis contained 79838 records and 18 variables. For the purposes of this investigation, to focus on data collected since UMD has been operating as a campus, the dataset for analysis includes information from 2001 - 2018, a total of of 75573 records.
+[Urban Ministries Durham](http://www.umdurham.org/) (UMD) was founded in 1983 and has since served thousands of people in the area in efforts to combat homelessness. The source dataset for this analysis contained 79838 records and 18 variables. The purpose of this investigation was to focus on data collected since UMD has been operating as a campus. Therefore, the dataset for analysis includes information from 2001 - 2018, a total of of 75573 records.
 <br>
 
 ##### Goals of this report:
-* To describe the growth that UMD has experienced in recent years
-* To capture trends about when people are coming and going
-* To capture a need associated with increasing visitors: food supply
+* To describe the growth that UMD has seen in recent years, since 2001
+* To capture trends about when people are coming and going throughout a calendar year.
+* To illustrate a need associated with increasing visitors over time: the food supply.
 <br>
 
 ##### The number of people served at UMD has grown annually.
-Between 2001 and 2018, UMD has seen an overall increase in number of people served.In 2001, 1297 clients were served at UMD, and 6074 people were served in the year 2018. 
+Between 2001 and 2018, UMD has seen an overall increase in number of people served.In 2001, 1297 clients were recorded as being served at UMD, and 6074 people were served in the year 2018. 
 <br> <img src="clients.year.point.png" width=65%/><br>
-The increase in overall visitors may be attributed to a combination of increased resources at UMD, increased awareness, and increased need in the area. 
+The increase in overall visitors may be attributed to a combination of growing resources at UMD, awareness, need in the area, or more consistent data collection over the years.
 <br>
 
-As displayed below, the number of new clients per month is relatively constant.
+As displayed in Figure 2, the number of new clients per month is relatively constant.
 <br> <img src="new.ids.month.box.png" width=65%/><br>
-This plot displays the distribution in the number of new visitors per month over the last 20 years. For example, March averages about 60 new clients per month in the past two decades. October sees the highest number of monthly new clients, and April sees the lowest, though the overlapping box plots do not indicate a statistically significant difference. 
+This plot displays the distribution in the number of new visitors per month over the last 20 years, with means plotted in blue Each point is the number of new clients seen in that month in an individual year. For example, October sees the highest number of monthly new clients, with a mean of 82.2 and median 76.5, and April sees the lowest. The overlapping box plots do not indicate a statistically significant difference between months. 
 <br>
 
 ##### How many services do clients receieve, and how long do they "stay"?
-People staying at or passing through UMD can receive several different types of services. The Number of services described in the histogram below is the number of times someone received food, clothing, bus passes, hygiene kit, school supplies, or diapers. 
+People staying at or passing through UMD can receive several different types of services. The number of services described in Figure 3 is the number of times someone received food, clothing, bus passes, hygiene kit, school supplies, or diapers. Food services are pooled; otherwise, if a client received several services per visit (date), the services are considered distinct. 
 <br> <img src="serv.hist.95.png" width=65%/> <br>
-The median number of services is 2, and the mean is 8.1. As many clients (n=6656) have only 1 recorded date where they visited, fewer stay longer or return to UMD, so the distribution of number of services per client is skewed right. This distribution is displayed up to the 0.95 quantile in order to see the lower end of the distribution in better detail.
+The median number of services per person is 2, and the mean is 8.1. As many clients (n=6656) have only 1 recorded date where they visited, fewer stay longer or return to UMD, so the distribution of number of services per client is skewed right. This histogram is displayed up to the 0.95 quantile in order to better display the bulk of the distribution.
 <br>
 
-The range of days between a client's first and last visit, similarly to the number of services they seek, is skewed to the right.
+The range of days between a client's first and last visit, similarly to the number of services they seek, is skewed to the right. Figure 4 displays the distribution of the number of days between individual clients' first and last dates of service for clients with more than one date of service. 6656 clients were recorded on only one day, and 8284 were recorded as receiving services on more than one day. 
 <img src="days.range.hist.png" width=65%/>
 <br>
 
+The range of days from first and last services is quite high for a small proportion of clients. This may be attributed to elongated consistent stays, or some returns back to UMD after weeks or months without visiting the campus.
+
 ##### During what time of year do people have their last visit at UMD?
-Similarly to individuals' first visit, there is not a standout month when people tend to have their last visit. 
+Similarly to individuals' first visit, there is not a standout month during which people tend to have their last visit, or receive their last service.  
 <img src="last.ids.month.box.png" width=65%/>
 <br>
-The y-axis above has been truncated to exclude 2 outliers occurring in November-December 2018. I expect that these are current clients or those who recently left UMD, since the data cutoff used here is 2018. 
+Figure 5 has 2 outliers occurring in November-December 2018. These may be current clients or those who recently left UMD, since the data cutoff used in this subset is the end of 2018. 
 
 ##### What happens around the last visit?
-Compared with other instances that clients receive service, the last date is not particularly different. Food and clothing are in overwhelmingly high demand throughout. When we take food and clothing out of the equation, there is a slight difference between services given before and at a person's last visit. <br>
+Compared with other instances where clients receive service, the last date is not particularly different. Food and clothing are in overwhelmingly high demand throughout. When we take food and clothing out of the equation, there is a slight difference between services given before and at a person's last visit. <br>
 <img src="all.serv.png" width=50%/><img src="last.serv.png" width=50%/>
 <br>
 
@@ -61,7 +63,7 @@ Food pounds distributed from the pantry and number of clients served are, unsurp
 <br>
 
 ##### Conclusions
-Urban ministries has steadily provided services to people in the community since its operation as a campus began in 2001. UMD appears to have momentum in its ability to help clients, and is on track to continue serving Durham individuals. It will not be surprising if food needs continue to increase proportionally with an increase in clients, and new clients can be expected at a relatively constant rate throughout the year.
+Urban ministries has consistently provided services to people of Durham since its operation as a campus began in 2001, and appears to have momentum in its ability to help clients. UMD is on track to continue serving the community and paving a path out of homelessness for individuals in the future. It will not be surprising if food needs continue to increase proportionally with an increase in clients, and new clients can be expected at a relatively constant rate throughout the year.
 
 
 
