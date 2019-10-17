@@ -105,7 +105,7 @@ tot.ids.my <- function(yrlow,yrhi) {
 
 ## boxplot for clients coming and going: arrive.go.month
 ## if only one year is selected, display a bar chart
-
+## add a disclaimer that if 'last' is selected, clients with visits after that date are classified as 'last'
 arr.go.mon <- function(yrlow,yrhi,visit) {  ## visit takes values 'first' or 'last', to represent 'coming' and going'
   
   if (visit=="first"){
@@ -127,25 +127,54 @@ arr.go.mon <- function(yrlow,yrhi,visit) {  ## visit takes values 'first' or 'la
         select(ID,MONTH.C) %>% distinct() 
       
       p<-ggplot(dat.new.id.m) +
-        geom_bar(aes(x=MONTH.C),color="darkorchid4",fill="darkorchid") +
+        geom_bar(aes(x=MONTH.C),color="mediumpurple4",fill="mediumpurple") +
         theme_minimal() +
         labs(title="Figure 2. New Clients by Month",x="Month",y="Number of New Clients")
       
     } else {
     
     p<-ggplot(dat.new.id.m,mapping=aes(x=MONTH.C,y=new.ids)) +
-      geom_point(color="darkorchid4") +
+      geom_point(color="mediumpurple4") +
       geom_boxplot() +
       geom_point(dat=dat.new.id.mean,aes(x=MONTH.C,y=mean.ids),color="cornflowerblue") +
       theme_minimal() +
-      labs(title="Figure 2. New Clients by Month",x="Month",y="Number of New Clients")
+      labs(title="New Clients by Month",x="Month",y="Number of New Clients")
     }
     
   } else if (visit=="last"){
     
+    #create subset if 'first' visit is selected to look at new client temporal trends
+    dat.last.id.m <- dat %>% select(ID,MONTH,DAY,MONTH.C,YEAR,DATENUM) %>% arrange(ID,DATENUM) %>%
+      group_by(ID) %>% filter(DATENUM==max(DATENUM)) %>% ungroup() %>% #keep last instance of each subject
+      group_by(MONTH.C,YEAR) %>% mutate(last.ids=length(unique(ID))) %>% ungroup() %>%
+      select(last.ids,YEAR,MONTH,MONTH.C) %>% distinct() %>%
+      filter(YEAR>=yrlow & YEAR<=yrhi)
+    dat.last.id.mean <- dat.last.id.m %>% group_by(MONTH.C) %>% mutate(mean.ids=mean(last.ids)) %>%
+      select(mean.ids,MONTH.C) %>% ungroup() %>% distinct() 
+    
+    #if only 1 year selected, create bar chart by month
+    if (yrhi==yrlow) {
+      dat.last.id.m <- dat %>% select(ID,MONTH,DAY,MONTH.C,YEAR,DATENUM) %>% arrange(ID,DATENUM) %>%
+        group_by(ID) %>% filter(DATENUM==max(DATENUM)) %>% ungroup() %>% #keep last instance of each subject
+        filter(YEAR>=yrlow & YEAR<=yrhi) %>%
+        select(ID,MONTH.C) %>% distinct() 
+      
+      p<-ggplot(dat.last.id.m) +
+        geom_bar(aes(x=MONTH.C),color="mediumpurple4",fill="mediumpurple") +
+        theme_minimal() +
+        labs(title="Clients' Last Visits by Month",x="Month",y="Number of Last Visits")
+      
+    } else {
+      
+      p<-ggplot(dat.new.id.m,mapping=aes(x=MONTH.C,y=new.ids)) +
+        geom_point(color="mediumpurple4") +
+        geom_boxplot() +
+        geom_point(dat=dat.new.id.mean,aes(x=MONTH.C,y=mean.ids),color="cornflowerblue") +
+        theme_minimal() +
+        labs(title="Clients' Last Visits by Month",x="Month",y="Number of New Clients")
     
   }
-  
+  }
   return(p)
   
 }
