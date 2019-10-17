@@ -79,7 +79,6 @@ dat <- dat %>% group_by(ID) %>%
 ## plot for total clients receiving service by month. users can change year range for granularity. 
 ## if year range is small enough, counts will show at each point.
 
-
 tot.ids.my <- function(yrlow,yrhi) {
   
   if ((yrhi - yrlow) <=6 ) { #if few years are selected,  increased granularity for months
@@ -179,6 +178,30 @@ arr.go.mon <- function(yrlow,yrhi,visit) {  ## visit takes values 'first' or 'la
   
 }
 
+
+## number of services per client: users can select type of service and year range
+
+numserv <- function(yrlow,yrhi,typeof) {
+  
+  # filter dataframe for year range and types of service based on slider and checkbox input
+  id.events <- dat[input$servs] %>% distinct()
+  
+  #plot all data
+  ggplot(data=id.events,aes(x=sumevents.ID)) +
+    geom_histogram(bins=40)
+  
+  #plot up to the 0.95 quantile
+  median(id.events$sumevents.ID)
+  mean(id.events$sumevents.ID)
+  p<-ggplot(data=id.events[id.events$sumevents.ID<quantile(id.events$sumevents.ID,0.95),],aes(x=sumevents.ID)) +
+    geom_histogram(bins=16,fill="snow2",color="snow4") +
+    geom_vline(aes(xintercept=mean(sumevents.ID)),color="slateblue4") +
+    geom_vline(aes(xintercept=median(sumevents.ID)),color="cornflowerblue") +
+    theme_minimal() + labs(title="Figure 3. Histogram of Number of Services (up to 0.95 quantile) Provided per Client",x="Number of Services",y="Count")
+  
+  
+  return(p)
+}
 
 
 
