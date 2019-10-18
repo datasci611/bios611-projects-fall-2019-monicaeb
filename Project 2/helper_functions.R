@@ -6,12 +6,12 @@
 library(tidyverse)
 
 ##################      wrangling      ####################
-
 # read in data, tab separated
 dat.orig <- read_delim("C:\\Users\\Monica Borges\\OneDrive - University of North Carolina at Chapel Hill\\BIOS 611\\GitHub Resources\\Projects\\Project 1\\data\\umd.txt",delim="\t")
 dat <- dat.orig #save original version
 
 dat <- dat[,c(1:13)] %>% select(-c(Referrals)) #keep first 13 columns as described in metadata
+
 
 # format dates for total sorting. create month and day column for trending.
 dat <- dat %>% mutate(DATENUM=format(strptime(Date,"%m/%d/%Y"),"%Y%m%d"),
@@ -81,15 +81,16 @@ dat <- dat %>% group_by(ID) %>%
 
 tot.ids.my <- function(yrlow,yrhi) {
   
+  
   if ((yrhi - yrlow) <=6 ) { #if few years are selected,  increased granularity for months
   dat.id <- dat %>% select(YEAR,MONTH,id.m.y) %>% 
-    mutate(YEAR.adj=as.numeric(substr(YEAR,3,4)),
+    mutate(YEAR.adj=as.numeric(substr(YEAR,3,4)-1),
            YEAR.month=YEAR.adj + (MONTH-1)/12) %>% distinct()
   
   p <- ggplot(dat.id,mapping=aes(x=YEAR.month,y=id.m.y)) +
     geom_point(color="darkorchid4") +
     theme_minimal() +
-    labs(title="Total Clients Receiving Service",x="Years Since 2001",y="Total Number of Clients")
+    labs(title="Total Clients Receiving Service",x="Years Since UMD Campus Opening (2001)",y="Total Number of Clients")
     
   } else {
   dat.id <- dat %>% select(YEAR,MONTH,sumID.yr) %>% distinct()
@@ -101,6 +102,16 @@ tot.ids.my <- function(yrlow,yrhi) {
   return(p)
 }
 
+## function to create text string, tell users that ranges of <6 years show more detail
+idyr.range.text <- function(range.yr) {
+  
+  if (range.yr <= 6) {
+    t <- "When a year range of less than 6 is selected, additional points on the scatter plot will appear for months."
+  } else {
+    t <- "When a year range of greater than 6 is selected, points display total client numbers by year."
+  }
+  
+}
 
 ## boxplot for clients coming and going: arrive.go.month
 ## if only one year is selected, display a bar chart

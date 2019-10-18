@@ -4,6 +4,11 @@
 library(shiny)
 library(shinydashboard)
 
+setwd("C:\\Users\\Monica Borges\\OneDrive - University of North Carolina at Chapel Hill\\BIOS 611\\GitHub Resources\\bios611-projects-fall-2019-monicaeb\\Project 2")
+
+source("helper_functions.R")
+
+
 ui <- fluidPage(
   
   #application title
@@ -20,11 +25,11 @@ ui <- fluidPage(
                   tabPanel("Number of Individuals Served", 
                            sidebarPanel(
                              
-                             sliderInput(inputId = "yr", label =("Year Range"), min = 2001, max = 2019, value = c(2001, 2018),
+                             sliderInput(inputId = "idyr", label =("Year Range"), min = 2001, max = 2019, value = c(2001, 2018),
                                          step=2,ticks=TRUE, sep=""),
                              
                              # tell users that if fewer than 6 years are selected, months will be displayed for increased detail
-                             textOutput("yearrange")
+                             textOutput("yearrange.tot.ids")
                              
                                        ),
                            mainPanel(
@@ -92,8 +97,26 @@ ui <- fluidPage(
 
 server <- function(input, output) {
   
+  output$numserved <- renderPlot({
+    
+    tot.ids.my(input$idyr[1],input$idyr[2])
+    
+  })
+  
+  output$yearrange.tot.ids <- renderText({
+    
+    range.id.yr <- as.numeric(input$idyr[2]) - as.numeric(input$idyr[1])
+    idyr.range.text(range.id.yr)
+    
+  })
   
 }
 
-
 shinyApp(ui = ui, server = server)
+
+
+
+
+
+
+
