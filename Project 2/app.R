@@ -98,7 +98,7 @@ server <- function(input, output) {
     
   })
   
-  output$arr.go <- renderPlot({
+  output$arr.go  <- renderPlot({
     
     tot.ids.my(yrlow=input$idyr[1],yrhi=input$idyr[2],points.typ=input$points.typ)
     
