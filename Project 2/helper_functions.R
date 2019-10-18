@@ -79,12 +79,12 @@ dat <- dat %>% group_by(ID) %>%
 ## plot for total clients receiving service by month. users can change year range for granularity. 
 ## if year range is small enough, counts will show at each point.
 
-tot.ids.my <- function(yrlow,yrhi) {
+tot.ids.my <- function(yrlow,yrhi,points.typ) { #args: year min, year max, points type (year or year with months)
   
   
-  if ((yrhi - yrlow) <=6 ) { #if few years are selected,  increased granularity for months
+  if (points.typ=="both") { #if few years are selected,  increased granularity for months
   dat.id <- dat %>% select(YEAR,MONTH,id.m.y) %>% 
-    mutate(YEAR.adj=as.numeric(substr(YEAR,3,4)-1),
+    mutate(YEAR.adj=as.numeric(substr(YEAR,3,4))-1,
            YEAR.month=YEAR.adj + (MONTH-1)/12) %>% distinct()
   
   p <- ggplot(dat.id,mapping=aes(x=YEAR.month,y=id.m.y)) +
@@ -93,23 +93,27 @@ tot.ids.my <- function(yrlow,yrhi) {
     labs(title="Total Clients Receiving Service",x="Years Since UMD Campus Opening (2001)",y="Total Number of Clients")
     
   } else {
-  dat.id <- dat %>% select(YEAR,MONTH,sumID.yr) %>% distinct()
-  p <- ggplot(dat.id,mapping=aes(x=YEAR,y=sumID.yr)) +
+  dat.id <- dat %>% mutate(YEAR.adj=as.numeric(substr(YEAR,3,4))-1) %>%
+    select(YEAR.adj,sumID.yr) %>% distinct()
+  p <- ggplot(dat.id,mapping=aes(x=YEAR.adj,y=sumID.yr)) +
     geom_point(color="darkorchid4") +
     theme_minimal() +
-    labs(title="Total Clients Receiving Service",x="Year",y="Total Number of Clients")
+    labs(title="Total Clients Receiving Service",x="Years Since UMD Campus Opening (2001)",y="Total Number of Clients")
   }
   return(p)
 }
 
 ## function to create text string, tell users that ranges of <6 years show more detail
-idyr.range.text <- function(range.yr) {
+numserved_txt <- function(yrlow,yrhi) {
   
-  if (range.yr <= 6) {
-    t <- "When a year range of less than 6 is selected, additional points on the scatter plot will appear for months."
-  } else {
-    t <- "When a year range of greater than 6 is selected, points display total client numbers by year."
-  }
+  dat.id <- dat %>% select(YEAR,sumID.yr) %>% distinct()
+  
+  lownum <- (unique(dat.id[as.numeric(dat.id$YEAR)==yrlow,]$sumID.yr))
+  hinum <- (unique(dat.id[as.numeric(dat.id$YEAR)==yrhi,]$sumID.yr))
+  
+  t <- paste0("The number of individuals served at UMD increased from ",lownum," total people in ",yrlow," to ", hinum ," total people in ",yrhi,".")
+  
+  return(t)
   
 }
 

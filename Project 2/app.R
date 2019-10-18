@@ -28,13 +28,17 @@ ui <- fluidPage(
                              sliderInput(inputId = "idyr", label =("Year Range"), min = 2001, max = 2019, value = c(2001, 2018),
                                          step=2,ticks=TRUE, sep=""),
                              
-                             # tell users that if fewer than 6 years are selected, months will be displayed for increased detail
-                             textOutput("yearrange.tot.ids")
+                             radioButtons(inputId = "points.typ", label = "Sum display",
+                                          choices = list("Year" = "year", "Year and Month" = "both"), 
+                                          selected = "year")
                              
                                        ),
                            mainPanel(
-                           
-                             plotOutput("numserved")
+                            # plot of number of individuals served each year or month
+                             plotOutput("numserved"),
+                             
+                             # describe change in number of individuals
+                             textOutput("numserved.txt")
                              
                            )
                           ),
@@ -66,21 +70,6 @@ ui <- fluidPage(
                            ),
                   
                   
-                  tabPanel("Number of Services per Client", 
-                  # users can select all services, or services of a certain type, and a year range
-                  #select year range
-                  sliderInput(inputId = "yr", label =("Year Range"), min = 2001, max = 2019, value = c(2001, 2018),
-                              step=2,ticks=TRUE, sep=""),
-                  
-                  checkboxGroupInput("servs", label =("Type of Services"), 
-                                     choices = list("Food" = "food", "Clothing" = "clothes", "Bus Tickets" = "bustix",
-                                                    "Hygiene Kits"="hyg", "School Kits"="school","Financial Support","fin"),
-                                     selected = "clothes"),
-                  
-                  textOutput("servtyp") # explaining that food service is collapsed for pounds
-                  
-                           ),
-                  
                   tabPanel("Ranges of Dates"
                            
                            
@@ -99,14 +88,13 @@ server <- function(input, output) {
   
   output$numserved <- renderPlot({
     
-    tot.ids.my(input$idyr[1],input$idyr[2])
+    tot.ids.my(yrlow=input$idyr[1],yrhi=input$idyr[2],points.typ=input$points.typ)
     
   })
   
-  output$yearrange.tot.ids <- renderText({
+  output$numserved.txt <- renderText({
     
-    range.id.yr <- as.numeric(input$idyr[2]) - as.numeric(input$idyr[1])
-    idyr.range.text(range.id.yr)
+    numserved_txt(yrlow=input$idyr[1],yrhi=input$idyr[2])
     
   })
   
