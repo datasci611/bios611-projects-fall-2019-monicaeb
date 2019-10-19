@@ -1,4 +1,3 @@
-
 ## helper functions and data wrangling for BIOS 611 project 2
 ## Monica Borges, fall 2019
 
@@ -83,22 +82,22 @@ tot.ids.my <- function(yrlow,yrhi,points.typ) { #args: year min, year max, point
   
   
   if (points.typ=="both") { #if few years are selected,  increased granularity for months
-  dat.id <- dat %>% select(YEAR,MONTH,id.m.y) %>% 
-    mutate(YEAR.adj=as.numeric(substr(YEAR,3,4))-1,
-           YEAR.month=YEAR.adj + (MONTH-1)/12) %>% distinct()
-  
-  p <- ggplot(dat.id,mapping=aes(x=YEAR.month,y=id.m.y)) +
-    geom_point(color="darkorchid4") +
-    theme_minimal() +
-    labs(title="Total Clients Receiving Service",x="Years Since UMD Campus Opening (2001)",y="Total Number of Clients")
+    dat.id <- dat %>% select(YEAR,MONTH,id.m.y) %>% 
+      mutate(YEAR.adj=as.numeric(substr(YEAR,3,4))-1,
+             YEAR.month=YEAR.adj + (MONTH-1)/12) %>% distinct()
+    
+    p <- ggplot(dat.id,mapping=aes(x=YEAR.month,y=id.m.y)) +
+      geom_point(color="darkorchid4") +
+      theme_minimal() +
+      labs(title="Total Clients Receiving Service",x="Years Since UMD Campus Opening (2001)",y="Total Number of Clients")
     
   } else {
-  dat.id <- dat %>% mutate(YEAR.adj=as.numeric(substr(YEAR,3,4))-1) %>%
-    select(YEAR.adj,sumID.yr) %>% distinct()
-  p <- ggplot(dat.id,mapping=aes(x=YEAR.adj,y=sumID.yr)) +
-    geom_point(color="darkorchid4") +
-    theme_minimal() +
-    labs(title="Total Clients Receiving Service",x="Years Since UMD Campus Opening (2001)",y="Total Number of Clients")
+    dat.id <- dat %>% mutate(YEAR.adj=as.numeric(substr(YEAR,3,4))-1) %>%
+      select(YEAR.adj,sumID.yr) %>% distinct()
+    p <- ggplot(dat.id,mapping=aes(x=YEAR.adj,y=sumID.yr)) +
+      geom_point(color="darkorchid4") +
+      theme_minimal() +
+      labs(title="Total Clients Receiving Service",x="Years Since UMD Campus Opening (2001)",y="Total Number of Clients")
   }
   return(p)
 }
@@ -146,13 +145,13 @@ arr.go.plot <- function(yrlow,yrhi,visit) {  ## visit takes values 'first' or 'l
         labs(title="New Clients by Month",x="Month",y="Number of New Clients")
       
     } else {
-    
-    p<-ggplot(dat.new.id.m,mapping=aes(x=MONTH.C,y=new.ids)) +
-      geom_point(color="mediumpurple4") +
-      geom_boxplot() +
-      geom_point(dat=dat.new.id.mean,aes(x=MONTH.C,y=mean.ids),color="cornflowerblue") +
-      theme_minimal() +
-      labs(title="Distribution of New Clients by Month",x="Month",y="Number of New Clients")
+      
+      p<-ggplot(dat.new.id.m,mapping=aes(x=MONTH.C,y=new.ids)) +
+        geom_point(color="mediumpurple4") +
+        geom_boxplot() +
+        geom_point(dat=dat.new.id.mean,aes(x=MONTH.C,y=mean.ids),color="cornflowerblue") +
+        theme_minimal() +
+        labs(title="Distribution of New Clients by Month",x="Month",y="Number of New Clients")
     }
     
   } else if (visit=="last"){
@@ -186,49 +185,43 @@ arr.go.plot <- function(yrlow,yrhi,visit) {  ## visit takes values 'first' or 'l
         geom_point(dat=dat.last.id.mean,aes(x=MONTH.C,y=mean.ids),color="cornflowerblue") +
         theme_minimal() +
         labs(title="Distribution of Clients' Last Visits by Month",x="Month",y="Number of New Clients")
-    
-  }
+      
+    }
   }
   return(p)
   
 }
 
 arr_go_text <- function(yrlow,yrhi,visit) {  ## visit takes values 'first' or 'last', to represent 'coming' and going'
-
-  if (visit=="first"){
-
+  
+  if (visit=="first" & !is.na(visit)){
+    
     #if only 1 year selected, create bar chart by month
-    if (yrhi==yrlow) {
-
+    if ((yrhi-yrlow)==0 & !is.na(yrhi) & !is.na(yrlow)) {
+      
       t <- paste0("Aboslute counts of new UMD visitors in ",yrhi," are displayed in the above bar plot.")
-
+      
     } else {
-
+      
       t <- paste0("First visits in earlier years may simply include visits after UMD began collecting this type of data.")
-
+      
     }
-
-  } else if (visit=="last"){
-
-
+    
+  } else {
+    
+    
     #if only 1 year selected, create bar chart by month
-    if (yrhi==yrlow) {
-
+    if ((yrhi-yrlow)==0 & !is.na(yrhi) & !is.na(yrlow)) {
+      
       t <- paste0("Aboslute counts of UMD visitors' last or most recent visitors in ",yrhi," are displayed in the above bar plot.")
-
+      
     } else {
-
+      
       t <- paste0("Last visits in more recent year may simply include most recent visits for clients planning to return to UMD.")
-
+      
     }
   }
   return(t)
-
+  
 }
-
-
-
-
-
-
 
