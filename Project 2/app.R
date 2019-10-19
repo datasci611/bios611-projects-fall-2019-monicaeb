@@ -48,22 +48,21 @@ ui <- fluidPage(
                            sidebarPanel(
                              
                              #select year range
-                             sliderInput(inputId = "yr", label =("Year Range"), min = 2001, max = 2019, value = c(2001, 2018),
+                             sliderInput(inputId = "yr.arr.go", label =("Year Range"), min = 2001, max = 2019, value = c(2001, 2018),
                                          step=2,ticks=TRUE, sep=""),
                              
                              #select first or last visit
-                             radioButtons("visit", label = h3("Visit Type"),
+                             radioButtons("visit.arr.go", label = h3("Visit Type"),
                                           choices = list("First Visit" = "first", "Last Recorded" = "last"), 
-                                          selected = "first"),
+                                          selected = "first")
                              
-                             #text output to accompany selection
-                             textOutput("last")
                              
                              
                            ),
                            mainPanel(
                              
-                             plotOutput("arr.go.plot")
+                             plotOutput("arr.go.plot"),
+                             textOutput("arr.go.txt")
                              
                            )
                            
@@ -98,9 +97,16 @@ server <- function(input, output) {
     
   })
   
-  output$arr.go  <- renderPlot({
+  output$arr.go.plot  <- renderPlot({
     
-    tot.ids.my(yrlow=input$idyr[1],yrhi=input$idyr[2],points.typ=input$points.typ)
+
+    arr.go.plot(visit=input$visit.arr.go, yrlow=input$yr.arr.go[1], yrhi=input$yr.arr.go[2])
+    
+  })
+  
+  output$arr.go.txt <- renderText({
+    
+    arr_go_text(visit=input$visit.arr.go, yrlow=input$yr.arr.go[1], yrhi=input$yrr.arr.go[2])
     
   })
   

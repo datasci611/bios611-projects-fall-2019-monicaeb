@@ -120,7 +120,7 @@ numserved_txt <- function(yrlow,yrhi) {
 ## boxplot for clients coming and going: arrive.go.month
 ## if only one year is selected, display a bar chart
 ## add a disclaimer that if 'last' is selected, clients with visits after that date are classified as 'last'
-arr.go.mon <- function(yrlow,yrhi,visit) {  ## visit takes values 'first' or 'last', to represent 'coming' and going'
+arr.go.plot <- function(yrlow,yrhi,visit) {  ## visit takes values 'first' or 'last', to represent 'coming' and going'
   
   if (visit=="first"){
     
@@ -138,12 +138,12 @@ arr.go.mon <- function(yrlow,yrhi,visit) {  ## visit takes values 'first' or 'la
       dat.new.id.m <- dat %>% select(ID,MONTH,DAY,MONTH.C,YEAR,DATENUM) %>% arrange(ID,DATENUM) %>%
         group_by(ID) %>% filter(DATENUM==min(DATENUM)) %>% ungroup() %>% #keep first instance of each subject
         filter(YEAR>=yrlow & YEAR<=yrhi) %>%
-        select(ID,MONTH.C) %>% distinct() 
+        select(ID,MONTH.C) #%>% distinct() 
       
       p<-ggplot(dat.new.id.m) +
         geom_bar(aes(x=MONTH.C),color="mediumpurple4",fill="mediumpurple") +
         theme_minimal() +
-        labs(title="Figure 2. New Clients by Month",x="Month",y="Number of New Clients")
+        labs(title="New Clients by Month",x="Month",y="Number of New Clients")
       
     } else {
     
@@ -152,7 +152,7 @@ arr.go.mon <- function(yrlow,yrhi,visit) {  ## visit takes values 'first' or 'la
       geom_boxplot() +
       geom_point(dat=dat.new.id.mean,aes(x=MONTH.C,y=mean.ids),color="cornflowerblue") +
       theme_minimal() +
-      labs(title="New Clients by Month",x="Month",y="Number of New Clients")
+      labs(title="Distribution of New Clients by Month",x="Month",y="Number of New Clients")
     }
     
   } else if (visit=="last"){
@@ -171,7 +171,7 @@ arr.go.mon <- function(yrlow,yrhi,visit) {  ## visit takes values 'first' or 'la
       dat.last.id.m <- dat %>% select(ID,MONTH,DAY,MONTH.C,YEAR,DATENUM) %>% arrange(ID,DATENUM) %>%
         group_by(ID) %>% filter(DATENUM==max(DATENUM)) %>% ungroup() %>% #keep last instance of each subject
         filter(YEAR>=yrlow & YEAR<=yrhi) %>%
-        select(ID,MONTH.C) %>% distinct() 
+        select(ID,MONTH.C) #%>% distinct() 
       
       p<-ggplot(dat.last.id.m) +
         geom_bar(aes(x=MONTH.C),color="mediumpurple4",fill="mediumpurple") +
@@ -180,12 +180,12 @@ arr.go.mon <- function(yrlow,yrhi,visit) {  ## visit takes values 'first' or 'la
       
     } else {
       
-      p<-ggplot(dat.new.id.m,mapping=aes(x=MONTH.C,y=new.ids)) +
+      p<-ggplot(dat.last.id.m,mapping=aes(x=MONTH.C,y=last.ids)) +
         geom_point(color="mediumpurple4") +
         geom_boxplot() +
-        geom_point(dat=dat.new.id.mean,aes(x=MONTH.C,y=mean.ids),color="cornflowerblue") +
+        geom_point(dat=dat.last.id.mean,aes(x=MONTH.C,y=mean.ids),color="cornflowerblue") +
         theme_minimal() +
-        labs(title="Clients' Last Visits by Month",x="Month",y="Number of New Clients")
+        labs(title="Distribution of Clients' Last Visits by Month",x="Month",y="Number of New Clients")
     
   }
   }
@@ -193,7 +193,38 @@ arr.go.mon <- function(yrlow,yrhi,visit) {  ## visit takes values 'first' or 'la
   
 }
 
+arr_go_text <- function(yrlow,yrhi,visit) {  ## visit takes values 'first' or 'last', to represent 'coming' and going'
 
+  if (visit=="first"){
+
+    #if only 1 year selected, create bar chart by month
+    if (yrhi==yrlow) {
+
+      t <- paste0("Aboslute counts of new UMD visitors in ",yrhi," are displayed in the above bar plot.")
+
+    } else {
+
+      t <- paste0("First visits in earlier years may simply include visits after UMD began collecting this type of data.")
+
+    }
+
+  } else if (visit=="last"){
+
+
+    #if only 1 year selected, create bar chart by month
+    if (yrhi==yrlow) {
+
+      t <- paste0("Aboslute counts of UMD visitors' last or most recent visitors in ",yrhi," are displayed in the above bar plot.")
+
+    } else {
+
+      t <- paste0("Last visits in more recent year may simply include most recent visits for clients planning to return to UMD.")
+
+    }
+  }
+  return(t)
+
+}
 
 
 
