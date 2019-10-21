@@ -2,7 +2,7 @@
 ## Monica Borges, fall 2019
 
 #load required packages
-library(tidyverse)
+#library(tidyverse)
 
 ##################      wrangling      ####################
 # read in data, tab separated

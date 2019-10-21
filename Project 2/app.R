@@ -1,7 +1,7 @@
 ## shiny app and ui for project 2
 
-library(shiny)
-library(shinydashboard)
+#library(shiny)
+#library(shinydashboard)
 
 #setwd("C:\\Users\\Monica Borges\\OneDrive - University of North Carolina at Chapel Hill\\BIOS 611\\GitHub Resources\\bios611-projects-fall-2019-monicaeb\\Project 2")
 
