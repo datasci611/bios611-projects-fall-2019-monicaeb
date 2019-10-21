@@ -2,11 +2,12 @@
 ## Monica Borges, fall 2019
 
 #load required packages
-#library(tidyverse)
+library(tidyverse)
 
 ##################      wrangling      ####################
 # read in data, tab separated
-dat.orig <- read_delim("C:\\Users\\Monica Borges\\OneDrive - University of North Carolina at Chapel Hill\\BIOS 611\\GitHub Resources\\Projects\\Project 1\\data\\umd.txt",delim="\t")
+#dat.orig <- readr::read_delim("C:\\Users\\Monica Borges\\OneDrive - University of North Carolina at Chapel Hill\\BIOS 611\\GitHub Resources\\Projects\\Project 1\\data\\umd.txt",delim="\t")
+dat.orig <- readr::read_delim("umd.txt",delim="\t")
 dat <- dat.orig #save original version
 
 dat <- dat[,c(1:13)] %>% select(-c(Referrals)) #keep first 13 columns as described in metadata
