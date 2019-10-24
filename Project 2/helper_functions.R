@@ -88,7 +88,7 @@ tot.ids.my <- function(yrlow,yrhi,points.typ) { #args: year min, year max, point
              YEAR.month=YEAR.adj + (MONTH-1)/12) %>% distinct()
     
     p <- ggplot(dat.id,mapping=aes(x=YEAR.month,y=id.m.y)) +
-      geom_point(color="darkorchid4",size=2.5) +
+      geom_point(color="darkorchid4",size=3.5) +
       theme_minimal() +
       labs(title="Total Clients Receiving Service",x="Years Since UMD Campus Opening (2001)",y="Total Number of Clients")
     
@@ -96,7 +96,7 @@ tot.ids.my <- function(yrlow,yrhi,points.typ) { #args: year min, year max, point
     dat.id <- dat %>% mutate(YEAR.adj=as.numeric(substr(YEAR,3,4))-1) %>%
       select(YEAR.adj,sumID.yr) %>% distinct()
     p <- ggplot(dat.id,mapping=aes(x=YEAR.adj,y=sumID.yr)) +
-      geom_point(color="darkorchid4",size=2.5) +
+      geom_point(color="darkorchid4",size=3.5) +
       theme_minimal() +
       labs(title="Total Clients Receiving Service",x="Years Since UMD Campus Opening (2001)",y="Total Number of Clients")
   }
@@ -148,9 +148,9 @@ arr.go.plot <- function(yrlow,yrhi,visit) {  ## visit takes values 'first' or 'l
     } else {
       
       p<-ggplot(dat.new.id.m,mapping=aes(x=MONTH.C,y=new.ids)) +
-        geom_point(color="mediumpurple4",size=2.5) +
+        geom_point(color="mediumpurple4",size=3.5) +
         geom_boxplot() +
-        geom_point(dat=dat.new.id.mean,aes(x=MONTH.C,y=mean.ids),color="cornflowerblue",size=2.5) +
+        geom_point(dat=dat.new.id.mean,aes(x=MONTH.C,y=mean.ids),color="cornflowerblue",size=3.5) +
         theme_minimal() +
         labs(title="Distribution of New Clients by Month",x="Month",y="Number of New Clients")
     }
@@ -183,7 +183,7 @@ arr.go.plot <- function(yrlow,yrhi,visit) {  ## visit takes values 'first' or 'l
       p<-ggplot(dat.last.id.m,mapping=aes(x=MONTH.C,y=last.ids)) +
         geom_point(color="mediumpurple4") +
         geom_boxplot() +
-        geom_point(dat=dat.last.id.mean,aes(x=MONTH.C,y=mean.ids),color="cornflowerblue",size=2.5) +
+        geom_point(dat=dat.last.id.mean,aes(x=MONTH.C,y=mean.ids),color="cornflowerblue",size=3.5) +
         theme_minimal() +
         labs(title="Distribution of Clients' Last Visits by Month",x="Month",y="Number of New Clients")
       
