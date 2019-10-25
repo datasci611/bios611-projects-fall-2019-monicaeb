@@ -5,8 +5,8 @@ account: monicaeb
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 1357502
-bundleId: 2522242
+bundleId: 2533130
 url: https://monicaeb.shinyapps.io/BIOS-611-Project2-Monica-Borges/
-when: 1571687103.66381
+when: 1571933764.20751
 asMultiple: FALSE
 asStatic: FALSE
