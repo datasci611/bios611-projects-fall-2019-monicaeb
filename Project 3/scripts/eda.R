@@ -24,16 +24,14 @@ demog <- demog.orig %>% rename(entage=`Client Age at Entry`,exage=`Client Age at
                           gender=`Client Gender`,race=`Client Primary Race`,ethnic=`Client Ethnicity`) %>%
   select(`Client ID`,entage,exage,gender,race,ethnic,UID) %>% distinct() # merge on EE UID var
 
-# visuals: pie chart of race
-
-# histogram of ages
+# visuals: pie chart of race, histogram of ages
 
 # clients growth over the years by gender
 
 ### a concept: when are people coming and going to and from the shelter? describe monthly trends, avg length of stay. split on interesting demogs.
 # using visits data, see when people are coming and going
 # create numeric dates for sorting, split up dates
-visits <- visits %>%
+visits <- visits.orig %>%
   mutate(first.datenum = as.numeric(strptime(`Entry Date`,"%m/%d/%Y")),
          last.datenum = as.numeric(strptime(`Exit Date`,"%m/%d/%Y")),
          first.m = format(strptime(`Entry Date`,"%m/%d/%Y"),"%m"),
@@ -51,16 +49,28 @@ max(as.numeric(visits$last.y),na.rm=TRUE) # 2019
 length(unique(visits$`Client ID`)) # 2364 people
 
 # box plot of first visits by month, each point is the sum for that year
-
 # box plot of last visits by month, each point is the sum for that year
+firstvis_box_df <- visits %>% select(first.m,first.mc,first.y,`Client ID`) %>% 
+  group_by(first.m,first.y) %>%
+  mutate(sumids.m=length(unique(`Client ID`))) %>% ungroup() %>%
+  distinct()
+lastvis_box_df <- visits %>% select(last.m,last.mc,last.y,`Client ID`) %>% 
+  group_by(last.m,last.y) %>%
+  mutate(sumids.m=length(unique(`Client ID`))) %>% ungroup() %>%
+  distinct()
+
+# visual check here, actual plots to be made in python
+boxplot(firstvis_box_df$sumids.m ~ firstvis_box_df$first.m)
+boxplot(lasstvis_box_df$sumids.m ~ lasstvis_box_df$lasst.m)
 
 ## concept: when are people coming and going throughout the year: trend or lack of trend has been established. what has changed in their lives between entry and departure? maybe income has increased. 
+
 
 ## concept: for those with monthly income listed, where is it coming from? is income higher when people leave UMD? 
 table(inc_enter$`Income Source (Entry)`[!is.na(inc_enter$`Monthly Amount (Entry)`)]) # mostly earned and SSDI
 table(inc_exit$`Source of Income (Exit)`[!is.na(inc_exit$`Monthly Amount (Exit)`)]) # mostly earned and SSDI
 
-
+summary(inc_enter)
 
 
 
