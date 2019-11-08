@@ -5,25 +5,29 @@ library(tidyverse)
 library(stringr)
 library(tools)
 
-demog.orig <- read_delim(url('https://raw.githubusercontent.com/biodatascience/datasci611/gh-pages/data/project2_2019/CLIENT_191102.tsv'),delim="\t")
+demog_orig <- read_delim(url('https://raw.githubusercontent.com/biodatascience/datasci611/gh-pages/data/project2_2019/CLIENT_191102.tsv'),delim="\t")
 inc_exit <- read_delim(url('https://raw.githubusercontent.com/biodatascience/datasci611/gh-pages/data/project2_2019/INCOME_EXIT_191102.tsv'),delim="\t")
 inc_enter <- read_delim(url('https://raw.githubusercontent.com/biodatascience/datasci611/gh-pages/data/project2_2019/INCOME_ENTRY_191102.tsv'),delim="\t")
 hins_exit <- read_delim(url('https://raw.githubusercontent.com/biodatascience/datasci611/gh-pages/data/project2_2019/HEALTH_INS_EXIT_191102.tsv'),delim="\t")
 hins_enter <- read_delim(url('https://raw.githubusercontent.com/biodatascience/datasci611/gh-pages/data/project2_2019/HEALTH_INS_ENTRY_191102.tsv'),delim="\t")
-visits.orig <- read_delim(url('https://raw.githubusercontent.com/biodatascience/datasci611/gh-pages/data/project2_2019/ENTRY_EXIT_191102.tsv'),delim="\t") 
+visits_orig <- read_delim(url('https://raw.githubusercontent.com/biodatascience/datasci611/gh-pages/data/project2_2019/ENTRY_EXIT_191102.tsv'),delim="\t") 
+survey_orig <- read_delim(url('https://raw.githubusercontent.com/biodatascience/datasci611/gh-pages/data/project2_2019/EE_UDES_191102.tsv'),delim="\t")
 
 ## initial cleaning of previous dataset
-#dat.orig <- readr::read_delim(url("https://raw.githubusercontent.com/biodatascience/datasci611/gh-pages/data/project1_2019/UMD_Services_Provided_20190719.tsv"),delim="\t")
+dat.orig <- readr::read_delim(url("https://raw.githubusercontent.com/biodatascience/datasci611/gh-pages/data/project1_2019/UMD_Services_Provided_20190719.tsv"),delim="\t")
+
+# sum(dat.orig$`Client File Number`%in%demog$`Client ID`)
+# sum(demog$`Client ID`%in%dat.orig$`Client File Number`)
 
 # descriptives of demographic data
-demog <- demog.orig
+demog <- demog_orig
 summary(demog$`Client Age at Entry`)
 summary(demog$`Client Age at Exit`)
 table(demog$`Client Gender`)
 table(demog$`Client Primary Race`)
 
 # clean up, prep to merge with other datasets
-demog <- demog.orig %>% rename(entage=`Client Age at Entry`,exage=`Client Age at Exit`,
+demog <- demog_orig %>% rename(entage=`Client Age at Entry`,exage=`Client Age at Exit`,
                           gender=`Client Gender`,race=`Client Primary Race`,ethnic=`Client Ethnicity`) %>%
   select(`Client ID`,entage,exage,gender,race,ethnic,`EE UID`) %>% distinct() # merge on EE UID var
 
@@ -34,7 +38,7 @@ demog <- demog.orig %>% rename(entage=`Client Age at Entry`,exage=`Client Age at
 ### a concept: when are people coming and going to and from the shelter? describe monthly trends, avg length of stay. split on interesting demogs.
 # using visits data, see when people are coming and going
 # create numeric dates for sorting, split up dates
-visits <- visits.orig %>%
+visits <- visits_orig %>%
   mutate(first_datenum = as.numeric(strptime(`Entry Date`,"%m/%d/%Y")),
          last_datenum = as.numeric(strptime(`Exit Date`,"%m/%d/%Y")),
          first_m = format(strptime(`Entry Date`,"%m/%d/%Y"),"%m"),
@@ -68,9 +72,27 @@ boxplot(lastvis_box_df$sumids_m ~ lastvis_box_df$last_m)
 
 # total counts of new clients per year by gender
 visits_fm <- visits %>% select(first_y,first_m,first_mc,`EE UID`, `Client ID`) %>%
-  distinct() %>% left_join(demog,by=c("EE UID","Client ID"))
+  distinct() %>% left_join(demog,by=c("EE UID","Client ID")) %>%
+  group_by(gender,first_y) %>% mutate(sumids=length(unique(`Client ID`))) %>%
+  ungroup() %>% group_by(first_y) %>% mutate(sumids_all=length(unique(`Client ID`)))
 
-## concept: when are people coming and going throughout the year: trend or lack of trend has been established. what has changed in their lives between entry and departure? maybe income has increased. 
+plot(visits_fm$first_y,visits_fm$sumids)
+
+## concept: where do people go when they leave? is there a gender difference, etc, or individual vs family?
+# 30 unique terms in destination, compile some
+visits <- visits %>% 
+  mutate(dest=ifelse(grepl(", permanent tenure",Destination),"friends/fam/perm",
+                     ifelse(grepl(", temporary tenure",Destination),"friends/fam/temp",
+                            ifelse(grepl("Rental|rental",Destination),"rental",
+                                   ifelse(grepl("psychiatric|abuse|care facility|Hospital",Destination),"hosp/psych/care facility",
+                                          ifelse(grepl("Owned by client",Destination),"owned",
+                                                 ifelse(grepl("project|shelter|Transitional|formerly homeless persons",Destination),"shelter/proj/trans/hotel",
+                                                        ifelse(grepl("Jail",Destination),"jail","Other/Unknown"))))))))
+View(unique(visits[,c("Destination","dest")]))
+
+table(visits$dest)
+
+## concept: when are people coming and going throughout the year: trend or lack of trend has been established. what has changed in their lives between entry and departure? income hasn't increased. 
 summary(inc_enter$`Monthly Amount (Entry)`,na.rm=TRUE)
 summary(inc_exit$`Monthly Amount (Exit)`,na.rm=TRUE)
 
