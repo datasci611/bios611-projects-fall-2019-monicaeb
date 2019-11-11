@@ -14,10 +14,35 @@ visits_orig <- read_delim(url('https://raw.githubusercontent.com/biodatascience/
 survey_orig <- read_delim(url('https://raw.githubusercontent.com/biodatascience/datasci611/gh-pages/data/project2_2019/EE_UDES_191102.tsv'),delim="\t")
 
 ## initial cleaning of previous dataset
-dat.orig <- readr::read_delim(url("https://raw.githubusercontent.com/biodatascience/datasci611/gh-pages/data/project1_2019/UMD_Services_Provided_20190719.tsv"),delim="\t")
+#dat.orig <- readr::read_delim(url("https://raw.githubusercontent.com/biodatascience/datasci611/gh-pages/data/project1_2019/UMD_Services_Provided_20190719.tsv"),delim="\t")
+
+
+# is length ofstay in previous place befofere umd correlatead ot how long they stayed at umd?
+survey <- survey_orig %>% mutate(prevstay=`Length of Stay in Previous Place(1934)`)
+table(survey$prevstay)
+survey <- survey %>% 
+  mutate(prevstay=ifelse(prevstay%in%c("Client doesn't know (HUD)", "Client refused (HUD)","Data not collected (HUD)"),"Unknown",
+                        ifelse(prevstay%in%c("One night or less","One week or less (HUD)","Two to six nights"),"< 1 week",
+                               ifelse(prevstay=="One week or more, but less than one month","1 week - 1 month",
+                                      ifelse(prevstay=="One month or more, but less than 90 days","1 - 3 months",
+                                             ifelse(prevstay=="90 days or more, but less than one year","3 months - 1 year",
+                                                    ifelse(prevstay=="One year or longer (HUD)","1+ year","")))))))
+#View(unique(survey[,c("Length of Stay in Previous Place(1934)","prevstay")]))
+
+# re-label categories for housing status
+survey <- survey %>% 
+  mutate(status=ifelse(`Housing Status(2703)`=="At-risk of homelessness (HUD)","",
+                       ifelse(`Housing Status(2703)`=="Category 1 - Homeless (HUD)","",
+                              ifelse(`Housing Status(2703)`=="Category 2 - At imminent risk of losing housing (HUD)","",
+                                     ifelse(`Housing Status(2703)`=="Category 3 - Homeless only under other federal statutes (HUD)","",
+                                            ifelse(`Housing Status(2703)`=="","",
+                                                   ifelse(`Housing Status(2703)`=="","","")))))))
 
 # sum(dat.orig$`Client File Number`%in%demog$`Client ID`)
 # sum(demog$`Client ID`%in%dat.orig$`Client File Number`)
+
+
+# something with zip codes: where are people coming from? present in desscriptive way
 
 # descriptives of demographic data
 demog <- demog_orig
@@ -48,7 +73,8 @@ visits <- visits_orig %>%
          first_d = format(strptime(`Entry Date`,"%m/%d/%Y"),"%d"),
          last_d = format(strptime(`Exit Date`,"%m/%d/%Y"),"%d"),
          first_y = format(strptime(`Entry Date`,"%m/%d/%Y"),"%Y"),
-         last_y = format(strptime(`Exit Date`,"%m/%d/%Y"),"%Y"))
+         last_y = format(strptime(`Exit Date`,"%m/%d/%Y"),"%Y")) %>%
+  mutate(totaldays=round((last_datenum-first_datenum)/86400))
 
 # some descriptives
 min(as.numeric(visits$first_y),na.rm=TRUE) # 2012
@@ -77,6 +103,14 @@ visits_fm <- visits %>% select(first_y,first_m,first_mc,`EE UID`, `Client ID`) %
   ungroup() %>% group_by(first_y) %>% mutate(sumids_all=length(unique(`Client ID`)))
 
 plot(visits_fm$first_y,visits_fm$sumids)
+
+# histogram for length of stay at umd by in previous place
+visits_total <- visits %>% select(`Client ID`,`EE UID`,totaldays) %>% distinct()
+survey_prev <- survey %>% select(`Client ID`,`EE UID`,prevstay) %>% distinct()
+visits_prev <- left_join(visits_total,survey_prev) # output dataframe to use in python plots
+
+# histogram for length of stay at UMD shelter by housing status
+survey_status <- survey %>% select(`Client ID`,`EE UID`,status) %>% distinct()
 
 ## concept: where do people go when they leave? is there a gender difference, etc, or individual vs family?
 # 30 unique terms in destination, compile some

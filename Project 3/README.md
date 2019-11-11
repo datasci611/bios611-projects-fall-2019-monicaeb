@@ -6,14 +6,19 @@
 The intended audience for this project is primarily those working with or at UMD. Additionally, anyone interested in nonprofit data or poverty around North Carolina may find this project informative
 
 #### Source Data
-* The first raw dataset provided by the client includes 79,838 records with 18 variables and 15,352 distinct Client ID Numbers. This dataset is found in the *data* folder. Variables describe food pounds, bus tickets, clothing, financial assistance, dates, hygiene kits, diaper distribution, and school supplies kits.
-* 
+* Datasets provided by UMD describe shelter services provided at the Durham campus. 
 
 #### Exploratory goals
+* Similarly to Project 1 and Project 2, this project focuses on general comings-and-goings of clients to and from UMD. 
+* The plots display temporal trends for when people arrive at or leave UMD, as well as trends with respect to income, length of stay in previous places, housing status, and some demographics.
+* The goal of this analysis is to help UMD, or anyone else interested in homelessness in the Triangle, 
 
 #### Scripts
+* eda.ipynb contains exploratory analysis, data cleaning, and subsetting. The datasets created in eda.R populate the plots created in plots.ipynb.
+* plots.R includes code to create and save plots used in the report and presentation.
+* report.Rmd is the Rmarkdown file used to 
 
-#### Make
+#### Make and Docker
 To run the scripts for this project, use the following commands:
 
 
