@@ -14,7 +14,7 @@ The intended audience for this project is primarily those working with or at UMD
 * The goal of this analysis is to help UMD, or anyone else interested in homelessness in the Triangle, 
 
 #### Scripts
-* eda.ipynb contains exploratory analysis, data cleaning, and subsetting. The datasets created in eda.R populate the plots created in plots.ipynb.
+* eda.ipynb contains exploratory analysis, data cleaning, and subsetting. These datasets .
 * plots.R includes code to create and save plots used in the report and presentation.
 * report.Rmd is the Rmarkdown file used to 
 
