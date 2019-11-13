@@ -9,7 +9,11 @@ output: html_document
 
 
 ### Goals of this report
-
+* To describe a big picture of the comings-and-goings-of clients at the UMD shelter
+* Observe overall growth in new visitors since 2012
+* Incorporate demographics from UMD and Durham to descriptive visuals
+* Describe any temporal trends in client arrival and departure
+* Investigate how long people stay at UMD, overall and with regard to survey results
 
 #### Who is coming to the UMD shelter, and how have clients grown since 2012?
 age histogram: 

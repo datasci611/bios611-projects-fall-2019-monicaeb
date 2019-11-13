@@ -23,26 +23,46 @@ p_agehist
 
 # increase in people staying, by year, lines by gender and total
 yearinc <- dat %>% group_by(first_year,Client.Gender) %>% mutate(newIDs=length(unique(Client.ID))) %>%
-  ungroup() %>% select(Client.Gender,first_year,newIDs) %>% filter(!is.na(Client.Gender)) %>%
+  ungroup() %>% select(Client.Gender,first_year,newIDs) %>% filter(!is.na(Client.Gender) & Client.Gender!="") %>%
   mutate(gender=gsub(" or Male to Female","",Client.Gender)) %>% distinct()
 yearinc.all <- dat %>% group_by(first_year) %>% mutate(newIDs=length(unique(Client.ID))) %>%
   ungroup() %>% select(Client.Gender,first_year,newIDs) %>%
   mutate(gender="All") %>% distinct()
-yearinc <- data.frame(rbind(yearinc,yearinc.all)) %>% mutate(gender=factor(gender,levels=unique(gender)))
+yearinc <- data.frame(rbind(yearinc,yearinc.all)) %>% mutate(Gender=factor(gender,levels=unique(gender)))
 
 
 p_yeargend <- ggplot(yearinc,aes(x=first_year)) + 
-  geom_point(aes(y=newIDs, col=gender)) +
-  geom_smooth(aes(y=newIDs, col=gender),se=FALSE)
+  geom_point(aes(y=newIDs, col=Gender)) +
+  geom_smooth(aes(y=newIDs, col=Gender),se=FALSE) +
+  theme_minimal() +
+  labs(title="Figure 2. Number of New Clients per Year by Gender",x="Year",y="# Of Clients Arriving")
 p_yeargend
 
-# histograms of people arriving, split by month
+# histograms of people arriving/leaving, split by month
+f_visit <- dat %>% group_by(first_year,first_m) %>% mutate(sumIDs=length(unique(Client.ID))) %>%
+  ungroup() %>% select(first_year,first_m,sumIDs) %>%
+  mutate(first_c=month.abb[first_m]) %>% 
+  mutate(first_c=factor(first_c,levels=c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")))
+l_visit <- dat %>% group_by(last_year,last_m) %>% mutate(sumIDs=length(unique(Client.ID))) %>%
+  ungroup() %>% select(last_year,last_m,sumIDs) %>%
+  mutate(last_c=month.abb[last_m]) %>%
+  mutate(last_c=factor(last_c,levels=c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")))
 
+p_histf <- ggplot(data=f_visit,aes(x=first_c,y=sumIDs)) +
+  geom_boxplot(color="lightcyan4",fill="lavender") +
+  geom_point(color="skyblue4") +
+  theme_minimal() +
+  labs(title="Figure 3: Distribution of Number of New Clients by Month")
+p_histf
 
-# histogram of people leaving, split by month
+p_histl <- ggplot(data=l_visit,aes(x=last_c,y=sumIDs)) +
+  geom_boxplot(color="lightcyan4",fill="honeydew1") +
+  geom_point(color="skyblue4") +
+  theme_minimal() +
+  labs(title="Figure 4: Distribution of Number of Departures by Month")
+p_histl
 
-
-# length of stay by length of stay in previous place
+# bar plot length of stay at UMD by length of stay in previous place
 
 
 # 
