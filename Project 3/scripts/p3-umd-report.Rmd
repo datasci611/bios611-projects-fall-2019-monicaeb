@@ -1,0 +1,29 @@
+---
+title: "UMD Part 3 - BIOS 611"
+author: "Monica E Borges"
+date: "11/13/2019"
+output: html_document
+---
+
+### Introduction to UMD
+
+
+### Goals of this report
+
+
+#### Who is coming to the UMD shelter, and how have clients grown since 2012?
+age histogram: 
+* distribution of ages of clients when they first come to UMD shelter
+* compared to [durham age demographics in 2017](http://worldpopulationreview.com/us-cities/durham-population/)
+
+
+
+
+
+
+
+
+
+
+
+
