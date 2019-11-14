@@ -4,6 +4,7 @@
 
 library(tools)
 library(tidyverse)
+library(ggmap)
 
 dat <- read.csv("C:\\Users\\Monica Borges\\OneDrive - University of North Carolina at Chapel Hill\\BIOS 611\\GitHub Resources\\bios611-projects-fall-2019-monicaeb\\Project 3\\data\\p3_clean.csv",stringsAsFactors=FALSE)
 
@@ -62,9 +63,26 @@ p_histl <- ggplot(data=l_visit,aes(x=last_c,y=sumIDs)) +
   labs(title="Figure 4: Distribution of Number of Departures by Month")
 p_histl
 
-# bar plot length of stay at UMD by length of stay in previous place
+# box plot length of stay at UMD by length of stay in previous place
+dat$prevstay <- dat$Length.of.Stay.in.Previous.Place.1934.
+dat <- dat %>% mutate(prevstay=ifelse(prevstay%in%c("Client doesn't know (HUD)", "Client refused (HUD)","Data not collected (HUD)"),"Unknown",
+                                      ifelse(prevstay%in%c("One night or less","One week or less (HUD)","Two to six nights"),"< 1 week",
+                                             ifelse(prevstay=="One week or more, but less than one month","1 week - 1 month",
+                                                    ifelse(prevstay=="One month or more, but less than 90 days","1 - 3 months",
+                                                           ifelse(prevstay=="90 days or more, but less than one year","3 months - 1 year",
+                                                                  ifelse(prevstay=="One year or longer (HUD)","1+ year",prevstay)))))))
 
+dat.prev <- dat %>% select(prevstay,diffdays,Client.ID,Client.Gender) %>% distinct() %>% 
+  filter(!is.na(diffdays),diffdays!="") %>% filter(!is.na(prevstay),prevstay!="") 
+quantile(dat.prev$diffdays,0.95)
+p_histgen <- ggplot(data=dat.prev[dat.prev$diffdays<=175 & dat.prev$Client.Gender!="Trans Female (MTF or Male to Female)",]) +
+  geom_violin(aes(x=Client.Gender,y=diffdays))
+p_histgen
 
+p_length <- ggplot(data=dat.prev,aes(x=prevstay,y=diffdays)) +
+  geom_point() +
+  geom_violin()
+p_length
 # 
 
 
