@@ -26,6 +26,12 @@ age histogram:
 
 
 
+Destination after UMD by housing status at Entry
+Rental                        Owned         Friends/family, temp    Friends/family, permanent 
+ 478                            5                         2035                          225 
+Hospital/psych/care facility Shelter/project/transitional           Unknown                         Jail 
+           203                          111                         1633                           43 
+
 
 
 
