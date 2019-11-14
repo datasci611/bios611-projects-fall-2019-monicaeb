@@ -63,35 +63,42 @@ p_histl <- ggplot(data=l_visit,aes(x=last_c,y=sumIDs)) +
   labs(title="Figure 4: Distribution of Number of Departures by Month")
 p_histl
 
-# box plot length of stay at UMD by length of stay in previous place
-dat$prevstay <- dat$Length.of.Stay.in.Previous.Place.1934.
-dat <- dat %>% mutate(prevstay=ifelse(prevstay%in%c("Client doesn't know (HUD)", "Client refused (HUD)","Data not collected (HUD)"),"Unknown",
-                                      ifelse(prevstay%in%c("One night or less","One week or less (HUD)","Two to six nights"),"< 1 week",
-                                             ifelse(prevstay=="One week or more, but less than one month","1 week - 1 month",
-                                                    ifelse(prevstay=="One month or more, but less than 90 days","1 - 3 months",
-                                                           ifelse(prevstay=="90 days or more, but less than one year","3 months - 1 year",
-                                                                  ifelse(prevstay=="One year or longer (HUD)","1+ year",prevstay)))))))
+# box plot length of stay at UMD by housing status
+dat$stat <- dat$Housing.Status.2703.
+dat <- dat %>% mutate(status=ifelse(stat=="At-risk of homelessness (HUD)","At Risk",
+                                    ifelse(stat%in%c("Category 1 - Homeless (HUD)","Category 3 - Homeless only under other federal statutes (HUD)"),"Homeless",
+                                           ifelse(stat=="Category 2 - At imminent risk of losing housing (HUD)","At imminent risk",
+                                                  ifelse(stat=="Stably housed (HUD)","Stably housed",
+                                                         ifelse(stat=="","","Unknown/Not reported"))))))
 
-dat.prev <- dat %>% select(prevstay,diffdays,Client.ID,Client.Gender) %>% distinct() %>% 
-  filter(!is.na(diffdays),diffdays!="") %>% filter(!is.na(prevstay),prevstay!="") 
-quantile(dat.prev$diffdays,0.95)
-p_histgen <- ggplot(data=dat.prev[dat.prev$diffdays<=175 & dat.prev$Client.Gender!="Trans Female (MTF or Male to Female)",]) +
-  geom_violin(aes(x=Client.Gender,y=diffdays))
-p_histgen
+dat.stat <- dat %>% select(status,diffdays,Client.ID,Client.Gender) %>% distinct() %>% 
+  filter(!is.na(diffdays),diffdays!="") %>% filter(!is.na(status),status!="") 
 
-p_length <- ggplot(data=dat.prev,aes(x=prevstay,y=diffdays)) +
-  geom_point() +
-  geom_violin()
+quantile(dat.stat$diffdays,0.95)
+
+p_length <- ggplot(data=dat.stat[dat.stat$diffdays<=179,]) +
+  geom_boxplot(aes(x=status,y=diffdays),color="snow4",fill="lavenderblush") + coord_flip() +
+  #geom_point(aes(x=status,y=diffdays),color="snow4",size=0.9) + 
+  #geom_jitter(aes(x=status,y=diffdays),width=0.25,color="snow4",size=0.3) +
+  theme_minimal() + theme(axis.text.y = element_text(angle = 30, hjust = 1)) +
+  labs(title="Figure 4: Days spent at UMD Shelter (up to 95% quantile) by Housing Status",y="Days",x="Housing\nStatus")
 p_length
-# 
 
+## housing status by destination
+unique(dat$Destination)
+dat.dest <- dat %>%
+  mutate(dest=ifelse(grepl(", permanent tenure",Destination),"friends/fam/perm",
+                     ifelse(grepl(", temporary tenure",Destination),"friends/fam/temp",
+                            ifelse(grepl("Rental|rental",Destination),"rental",
+                                   ifelse(grepl("psychiatric|abuse|care facility|Hospital",Destination),"hosp/psych/care facility",
+                                          ifelse(grepl("Owned by client",Destination),"owned",
+                                                 ifelse(grepl("project|shelter|Transitional|formerly homeless persons",Destination),"shelter/proj/trans/hotel",
+                                                        ifelse(grepl("Jail",Destination),"jail","Other/Unknown")))))))) %>%
+  select(Client.ID,dest,status,diffdays) %>% filter(dest!="",status!="")
 
-
-
-
-
-
-
+p_statdest <- ggplot(data=dat.dest, aes(status,fill=dest)) + 
+  geom_bar(position="fill") + scale_color_brewer(palette = "Set2")
+p_statdest
 
 
 
