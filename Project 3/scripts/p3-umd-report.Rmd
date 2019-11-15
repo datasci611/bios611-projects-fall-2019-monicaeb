@@ -1,12 +1,18 @@
 ---
-title: "UMD Part 3 - BIOS 611"
-author: "Monica E Borges"
-date: "11/13/2019"
+#title: "UMD Part 3 - BIOS 611"
+#author: "Monica E Borges"
+#date: "11/13/2019"
 output: html_document
 ---
+### Urban Ministries Durham Project, Part III
+<img src="http://www.umdurham.org/assets/images/logo-new1.png" width=30%>
+
+###### Monica E. Borges, BIOS 611, Fall 2019
 
 ### Introduction to UMD
-
+[Urban Ministries Durham](http://www.umdurham.org/) (UMD) was founded in 1983 and has since served thousands of people in the Durham area in efforts to combat homelessness. UMD has been operating as a campus since 2008, and runs a food pantry, community cafe, gives out hygiene kits, and provides many other services to help people on a path out of homelessness. 
+The data for this report pertains to the shelter at UMD. Dates range from 2012 - 2019, and several datasets were used:
+* visit data included 5299 records with information about clients's entry and exit dates, where they last stayed, and 
 
 ### Goals of this report
 * To describe a big picture of the comings-and-goings-of clients at the UMD shelter
@@ -20,13 +26,16 @@ age histogram:
 * distribution of ages of clients when they first come to UMD shelter
 * compared to [durham age demographics in 2017](http://worldpopulationreview.com/us-cities/durham-population/)
 
+#### What is the distribution of number of entries by month?
 
 
+#### What is the distribution of exits by month?
 
 
+#### Length of stay at UMD by housing status
 
 
-Destination after UMD by housing status at Entry
+#### Destination after UMD by housing status at Entry
 Rental                        Owned         Friends/family, temp    Friends/family, permanent 
  478                            5                         2035                          225 
 Hospital/psych/care facility Shelter/project/transitional           Unknown                         Jail 
