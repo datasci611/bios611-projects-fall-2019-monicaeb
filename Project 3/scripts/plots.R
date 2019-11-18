@@ -22,6 +22,22 @@ p_agehist <- ggplot(data=demog,aes(x=Client.Age.at.Entry)) +
   labs(title="Figure 1. Histogram of Client Age Upon Arrival",x="Age (years)",y="Count")
 p_agehist
 
+p_agehistf <- ggplot(data=demog[demog$Client.Gender=="Female",],aes(x=Client.Age.at.Entry)) +
+  geom_histogram(bins=20,fill="snow2",color="skyblue4") +
+  theme_minimal() +
+  #geom_vline(aes(xintercept=meanage),color="indianred3",size=1) + # mean = 44.3
+  #geom_vline(aes(xintercept=medage),color="indianred4",size=1) + # med = 46, n=3 are missing
+  labs(title="Figure 1. Histogram of Client Age Upon Arrival",x="Age (years)",y="Count")
+p_agehistf
+
+p_agehistm <- ggplot(data=demog[demog$Client.Gender=="Male",],aes(x=Client.Age.at.Entry)) +
+  geom_histogram(bins=20,fill="snow2",color="skyblue4") +
+  theme_minimal() +
+  #geom_vline(aes(xintercept=meanage),color="indianred3",size=1) + # mean = 44.3
+  #geom_vline(aes(xintercept=medage),color="indianred4",size=1) + # med = 46, n=3 are missing
+  labs(title="Figure 1. Histogram of Client Age Upon Arrival",x="Age (years)",y="Count")
+p_agehistm
+
 ggsave(plot=p_agehist,filename="./report/p_agehist.png",device="png")
 
 # increase in people staying, by year, lines by gender and total
@@ -56,15 +72,15 @@ l_visit <- dat %>% group_by(last_year,last_m) %>% mutate(sumIDs=length(Client.ID
 p_histf <- ggplot(data=f_visit,aes(x=first_c,y=sumIDs)) +
   geom_boxplot(color="lightcyan4",fill="lavender") +
   geom_point(color="skyblue4") +
-  theme_minimal() +
-  labs(title="Figure 3: Distribution of Number of New Clients by Month")
+  theme_minimal() 
+  labs(title="Figure 3: Distribution of Number of New Clients by Month",x="Month",y="Number of New Clients")
 p_histf
 
 p_histl <- ggplot(data=l_visit,aes(x=last_c,y=sumIDs)) +
   geom_boxplot(color="lightcyan4",fill="honeydew1") +
   geom_point(color="skyblue4") +
   theme_minimal() +
-  labs(title="Figure 4: Distribution of Number of Departures by Month")
+  labs(title="Figure 4: Distribution of Number of Departures by Month",x="Month",y="Number of Departures")
 p_histl
 
 ggsave(plot=p_histf,filename="./report/p_histf.png",device="png")
@@ -104,7 +120,7 @@ dat <- dat %>% mutate(status=ifelse(stat=="At-risk of homelessness (HUD)","At Ri
                                     ifelse(stat%in%c("Category 1 - Homeless (HUD)","Category 3 - Homeless only under other federal statutes (HUD)"),"Homeless",
                                            ifelse(stat=="Category 2 - At imminent risk of losing housing (HUD)","At imminent risk",
                                                   ifelse(stat=="Stably housed (HUD)","Stably housed",
-                                                         ifelse(stat=="","","Unknown/Not reported"))))))
+                                                         ifelse(stat=="","","Unknown/\nNot reported"))))))
 
 dat.stat <- dat %>% select(status,diffdays,Client.ID,Client.Gender) %>% distinct() %>% 
   filter(!is.na(diffdays),diffdays!="") %>% filter(!is.na(status),status!="") 
@@ -135,7 +151,7 @@ dat.dest <- dat %>%
 p_statdest <- ggplot(data=dat.dest, aes(status,fill=dest)) + 
   geom_bar(position="fill") + scale_fill_brewer(palette = "Set2") +
   labs(title="Figure 7: Destination after UMD by Housing Status at Entry",x="Housing status",y="% of Clients") +
-  guides(fill=guide_legend(title="Next destination"))
+  guides(fill=guide_legend(title="Next destination")) #+ theme(axis.text.x = element_text(angle =30, hjust = 1))
 p_statdest
 
 ggsave(plot=p_statdest,filename="./report/p_statdest.png",device="png")

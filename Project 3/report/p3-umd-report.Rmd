@@ -16,6 +16,8 @@ The data for this report pertains to the shelter at UMD. Dates range from 2012 -
 * demographic data included gender, race, and ethnicity
 * Survey data included 5299 records and variables about
 
+<br>
+
 ### Goals of this report
 * To describe a big picture of the comings-and-goings-of clients at the UMD shelter
 * Observe overall growth in new visitors since 2012
@@ -23,8 +25,10 @@ The data for this report pertains to the shelter at UMD. Dates range from 2012 -
 * Describe any temporal trends in client arrival and departure
 * Investigate how long people stay at UMD, overall and with regard to survey results
 
+<br>
+
 #### Who is coming to the UMD shelter, and how have clients grown since 2012?
-<img src="p_agehist.png" width=50%> 
+<img src="p_agehist.png" width=80%> 
 
 * The mean age when people enter the shelter is 44 years, and the median is 46 years. According to [World Population Review,](http://worldpopulationreview.com/us-cities/durham-population/#byAge) The median age in Durham in recent years, across genders, is 32. This indicates that the age distribution of UMD clients is older than that of other Durham residents.
 
@@ -32,21 +36,25 @@ The data for this report pertains to the shelter at UMD. Dates range from 2012 -
 
 Since 2012, the number of new people staying at UMD increased for several years before decreasing and appearing to steady. This is a plot of 
 
+<br>
 
-#### What is the distribution of number of entries by month?
-<img src="p_histf.png" width=50%>
+#### Are some months more popular than others for new clients?
+<img src="p_histf.png" width=80%>
 
+<br>
 
-#### What is the distribution of exits by month?
-<img src="p_histl.png" width=50%>
+#### Do more people tend to leave during certain months?
+<img src="p_histl.png" width=80%>
 
+<br>
 
 #### Length of stay at UMD by housing status
-<img src="p_lengthstat.png" width=50%>
+<img src="p_lengthstat.png" width=80%>
 
+<br>
 
 #### Destination after UMD by housing status at Entry
-<img src="p_statdest.png" width=50%>
+<img src="p_statdest.png" width=80%>
 
 Rental                        Owned         Friends/family, temp    Friends/family, permanent 
  478                            5                         2035                          225 
