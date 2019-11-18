@@ -34,7 +34,16 @@ The data for this report pertains to the shelter at UMD. Dates range from 2012 -
 
 * Male clients have a median age of 47, and female clients have a median age of 44. There are 8 different transgender clients, entering the shelter at 10 instances, and their median age is much younger: 32.5.
 
-Since 2012, the number of new people staying at UMD increased for several years before decreasing and appearing to steady. This is a plot of 
+Since 2012, the number of new people staying at UMD increased for several years before decreasing and appearing to steady. Figure 2 displays client-flow split by gender. 
+
+New men and women visitors increase and decrease over the same time intervals, but at different rates and in different amounts.  Because there are more men than women individuals staying at the UMD shelter, their curve more closely mirrors the "All" curve.
+
+<img src="p_yeargend.png" width=80%> 
+
+The steady increase from 2012 to 2015 may be due to increased need in the area or expanding UMD's resources and capacity since the shelter opening. 
+As the number of new clients decreases, this does not indicate a decrease in number of people at the shelter--people may simply be staying longer, meaning that there is less room for new clients. Additionally, the number of new yearly clients appears to be leveling off, with a measure of 600 in 2018 and 550 thus far in 2019. 
+
+Transgender clients appear constant over the years in comparison, likely due to the small number (N=10) of check-ins in this group.
 
 <br>
 
