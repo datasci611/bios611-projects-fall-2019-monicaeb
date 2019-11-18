@@ -12,9 +12,9 @@ output: html_document
 ### Introduction to UMD
 [Urban Ministries Durham](http://www.umdurham.org/) (UMD) was founded in 1983 and has since served thousands of people in the Durham area in efforts to combat homelessness. UMD has been operating as a campus since 2008, and runs a food pantry, community cafe, gives out hygiene kits, and provides many other services to help people on a path out of homelessness. 
 The data for this report pertains to the shelter at UMD. Dates range from 2012 - 2019, and several datasets were used:
-* visit data included 5299 records with information about clients's entry and exit dates, where they last stayed, next destination, and more.
-* demographic data included gender, race, and ethnicity
-* Survey data included 5299 records and variables about
+* Visit data included 5299 records with information about clients's entry and exit dates, where they last stayed, next destination, and more.
+* Demographic data included gender, race, and ethnicity
+* Survey data included 5299 records and variables about homelessness status, 
 
 <br>
 
@@ -48,28 +48,48 @@ Transgender clients appear constant over the years in comparison, likely due to 
 <br>
 
 #### Are some months more popular than others for new clients?
+As new clients come to UMD every year, it may be helpful to understand if some months are more popular than others and how to plan ahead for waves of check-ins. 
+Figure 3 includes 12 box plots, each containing the distribution of number of new clients in a month for each year since 2012. The horizontal line is the median value, and the top and bottom of each box represent the 75th and 25th percentile, respectively. Each point is the sum of check-ins at UMD during that month for a particular year.
+
 <img src="p_histf.png" width=80%>
+
+The distributions vary in shape, and only 7 years of data are included. Median values range from 57 to 112 new clients per month. The most popular month was in August, with over 200 first visits. 
+because all of the boxes overlap, we cannot conclude a significant temporal trend, indicating a relatively steady influx of clients throughout the year.
 
 <br>
 
 #### Do more people tend to leave during certain months?
+Similarly to figure 3, Figure 4 displays the distribution of departures from the shelter by month since 2012. 
+
 <img src="p_histl.png" width=80%>
+
+Since all of the distributions represented by the box plots overlap, we cannot conclude that different months see a significantly different number of departures. 
 
 <br>
 
 #### Length of stay at UMD by housing status
+The survey data provided some background information about clients, including their housing status at the time of entering UMD shelter. The vast majority of clients are classified at "Homeless" at their time of entry to UMD. 
+
 <img src="p_lengthstat.png" width=80%>
+
+Figure 6 is truncated at the 95% quantile because of how far right-skewed the distribution of days spent at UMD is. The overall median length of stay at UMD is 18 days, and the mean is approximately 43 days. This indicates a right-skew, and the distribution is reflected well by the "Homeless" category in Figure 6. Each point in this figure indicates an outlier, or a length of days stayed at UMD greater than the 75th percentile for a group. 
 
 <br>
 
 #### Destination after UMD by housing status at Entry
+
+We discovered in figure 4 that clients leave UMD at a relatively constant rate throughout the year. It may be helpful to see how their next destinations are distributed , and see if we can try to predict based on housing status.
+
 <img src="p_statdest.png" width=80%>
 
-Rental                        Owned         Friends/family, temp    Friends/family, permanent 
- 478                            5                         2035                          225 
-Hospital/psych/care facility Shelter/project/transitional           Unknown                         Jail 
-           203                          111                         1633                           43 
+A fair portion of clients do not have associated data about where they go after leaving UMD. Temporarily staying with friends and family is the most popular next move for clients, though surprisingly prevalent among the "stably housed" category.
 
+
+#### Conclusions
+* Individuals come and go relatively consistently by month throughout years over time. 
+* Individuals staying at the UMD shelter tend to be a little older than the average age in Durham, and most clients are men.
+* The rate of new clients visiting the UMD shelter may be leveling out, however it will take a few more years to decide if this is true. Additionally, the expansion of UMD's resources in the future might invite an uptick in clients. 
+* 
 
 
 

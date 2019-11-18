@@ -62,24 +62,24 @@ ggsave(plot=p_yeargend,filename="./report/p_yeargend.png",device="png")
 # histograms of people arriving/leaving, split by month
 f_visit <- dat %>% group_by(first_year,first_m) %>% mutate(sumIDs=length(Client.ID)) %>%
   ungroup() %>% select(first_year,first_m,sumIDs) %>%
-  mutate(first_c=month.abb[first_m]) %>% filter(!is.na(first_c)) %>%
+  mutate(first_c=month.abb[first_m]) %>% filter(!is.na(first_c)) %>% distinct() %>%
   mutate(first_c=factor(first_c,levels=c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")))
 l_visit <- dat %>% group_by(last_year,last_m) %>% mutate(sumIDs=length(Client.ID)) %>%
   ungroup() %>% select(last_year,last_m,sumIDs) %>%
-  mutate(last_c=month.abb[last_m]) %>% filter(!is.na(last_c)) %>%
+  mutate(last_c=month.abb[last_m]) %>% filter(!is.na(last_c)) %>% distinct() %>%
   mutate(last_c=factor(last_c,levels=c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")))
 
 p_histf <- ggplot(data=f_visit,aes(x=first_c,y=sumIDs)) +
   geom_boxplot(color="lightcyan4",fill="lavender") +
   geom_point(color="skyblue4") +
-  theme_minimal() 
+  theme_minimal() + ylim(c(0,230)) +
   labs(title="Figure 3: Distribution of Number of New Clients by Month",x="Month",y="Number of New Clients")
 p_histf
 
 p_histl <- ggplot(data=l_visit,aes(x=last_c,y=sumIDs)) +
   geom_boxplot(color="lightcyan4",fill="honeydew1") +
   geom_point(color="skyblue4") +
-  theme_minimal() +
+  theme_minimal() + ylim(c(0,230)) +
   labs(title="Figure 4: Distribution of Number of Departures by Month",x="Month",y="Number of Departures")
 p_histl
 
