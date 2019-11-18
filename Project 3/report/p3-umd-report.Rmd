@@ -13,8 +13,8 @@ output: html_document
 [Urban Ministries Durham](http://www.umdurham.org/) (UMD) was founded in 1983 and has since served thousands of people in the Durham area in efforts to combat homelessness. UMD has been operating as a campus since 2008, and runs a food pantry, community cafe, gives out hygiene kits, and provides many other services to help people on a path out of homelessness. 
 The data for this report pertains to the shelter at UMD. Dates range from 2012 - 2019, and several datasets were used:
 * Visit data included 5299 records with information about clients's entry and exit dates, where they last stayed, next destination, and more.
-* Demographic data included gender, race, and ethnicity
-* Survey data included 5299 records and variables about homelessness status, 
+* Demographic data included age at entry, gender, race, and ethnicity for each individual.
+* Survey data included 5299 records and variables about homelessness status
 
 <br>
 
