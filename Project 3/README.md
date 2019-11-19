@@ -4,10 +4,13 @@
 
 #### Background
 [Urban Ministries of Durham](http://umdurham.org/) (UMD) has been helping end homelessness in the neighborhood for decades. Through a community shelter, cafe, food pantry, and clothing closet, UMD's efforts have touched over 15,000 lives and helped this many individuals pave a path out of homelessness. 
-The intended audience for this project is primarily those working with or at UMD. Additionally, anyone interested in nonprofit data or poverty around North Carolina may find this project informative
+The intended audience for this project is primarily those working with or at UMD. Additionally, anyone interested in nonprofit data or poverty around North Carolina may find this project informative.
 
 #### Source Data
 * Datasets provided by UMD describe shelter services provided at the Durham campus. 
+* [Raw survey data](https://raw.githubusercontent.com/biodatascience/datasci611/gh-pages/data/project2_2019/EE_UDES_191102.tsv)
+* [Raw entry and exit data](https://raw.githubusercontent.com/biodatascience/datasci611/gh-pages/data/project2_2019/ENTRY_EXIT_191102.tsv)
+* [Raw demographic data](https://raw.githubusercontent.com/biodatascience/datasci611/gh-pages/data/project2_2019/CLIENT_191102.tsv)
 
 #### Exploratory goals
 * Similarly to Project 1 and Project 2, this project focuses on general comings-and-goings of clients to and from UMD. 
@@ -20,7 +23,7 @@ The intended audience for this project is primarily those working with or at UMD
 * report.Rmd is the Rmarkdown file used to create the report. This script depends on plots.R and eda.ipynb to compile.
 
 #### Make and Docker
-To recreate this analysis and report, make and docker facilitate workflow and ensure use of the correct R and python packages.
+To recreate this analysis and report, a [makefile]() and [docker file]() are available to manage workflow and ensure use of the correct R and python packages.
 
 
 

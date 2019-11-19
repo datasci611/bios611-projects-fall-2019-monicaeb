@@ -11,23 +11,30 @@ output: html_document
 
 ### Introduction to UMD
 [Urban Ministries Durham](http://www.umdurham.org/) (UMD) was founded in 1983 and has since served thousands of people in the Durham area in efforts to combat homelessness. UMD has been operating as a campus since 2008, and runs a food pantry, community cafe, gives out hygiene kits, and provides many other services to help people on a path out of homelessness. 
-The data for this report pertains to the shelter at UMD. Dates range from 2012 - 2019, and several datasets were used:
+This report pertains to the shelter at UMD. Dates range from 2012 - 2019, and several datasets were used:
+
 * Visit data included 5299 records with information about clients's entry and exit dates, where they last stayed, next destination, and more.
 * Demographic data included age at entry, gender, race, and ethnicity for each individual.
 * Survey data included 5299 records and variables about homelessness status
 
-<br>
 
-### Goals of this report
-* To describe a big picture of the comings-and-goings-of clients at the UMD shelter
+
+#### Goals of this report
+
+* To describe overall comings-and-goings-of clients at the UMD shelter
 * Observe overall growth in new visitors since 2012
 * Incorporate demographics from UMD and Durham to descriptive visuals
 * Describe any temporal trends in client arrival and departure
 * Investigate how long people stay at UMD, overall and with regard to survey results
 
-<br>
+##### Data cleaning
+Before creating visuals, categorical variables were binned to make information clearer to communicate. This data cleaning included grouping together similar responses for survey questions such as housing status and destination. 
+
+
 
 #### Who is coming to the UMD shelter, and how have clients grown since 2012?
+Data provided from 2012 to 2019 cover 2364 clients. If a client returns to UMD after leaving at a different date, their return entry counts as another entry.
+
 <img src="p_agehist.png" width=80%> 
 
 * The mean age when people enter the shelter is 44 years, and the median is 46 years. According to [World Population Review,](http://worldpopulationreview.com/us-cities/durham-population/#byAge) The median age in Durham in recent years, across genders, is 32. This indicates that the age distribution of UMD clients is older than that of other Durham residents.
@@ -41,9 +48,7 @@ New men and women visitors increase and decrease over the same time intervals, b
 <img src="p_yeargend.png" width=80%> 
 
 The steady increase from 2012 to 2015 may be due to increased need in the area or expanding UMD's resources and capacity since the shelter opening. 
-As the number of new clients decreases, this does not indicate a decrease in number of people at the shelter--people may simply be staying longer, meaning that there is less room for new clients. Additionally, the number of new yearly clients appears to be leveling off, with a measure of 600 in 2018 and 550 thus far in 2019. 
-
-Transgender clients appear constant over the years in comparison, likely due to the small number (N=10) of check-ins in this group.
+As the number of new clients decreases, this does not indicate a decrease in number of people at the shelter--people may simply be staying longer, meaning that there is less room for new clients. Additionally, the number of new yearly clients appears to be leveling off, with a measure of 600 in 2018 and 550 thus far in 2019. Transgender clients appear constant over the years in comparison, due to the small number (N=10) of check-ins in this group.
 
 <br>
 
@@ -89,7 +94,7 @@ A fair portion of clients do not have associated data about where they go after 
 * Individuals come and go relatively consistently by month throughout years over time. 
 * Individuals staying at the UMD shelter tend to be a little older than the average age in Durham, and most clients are men.
 * The rate of new clients visiting the UMD shelter may be leveling out, however it will take a few more years to decide if this is true. Additionally, the expansion of UMD's resources in the future might invite an uptick in clients. 
-* 
+* There isn't a clear association between clients' housing status and their time spent at UMD, apart from most clients being classified as "Homeless".
 
 
 
