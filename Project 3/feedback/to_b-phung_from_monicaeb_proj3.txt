@@ -1,0 +1,47 @@
+1. Is the project organized modularly, with Make as the workflow manager?
+- Not yet, but the README states that Make will be used in the final draft. I appreciate that you acknowledged this in the README so that I wouldn't have to go looking for it! 
+
+2. Does the project use both Python (Pandas specifically) and R (Tidyverse specifically) scripts?
+- Not yet, but the README states that Python will be used in the final draft. Be sure to use Pandas when you do incorporate python.
+
+3. Is Docker used to define execution environments appropriately?
+- Not yet, but according to the README, that's the plan. Be sure to indicate the right versions of software and packages when using Docker. 
+
+4. Are the plots appropriate for the data types, the hypotheses being tested, and the points being communicated?
+- The plots aren't saved on github, so I ran your code myself. I think that the plot of zip code versus HPI doesn't tell us much as it is. I think there's an R package that converts zip codes to latitude and longitude--maybe measuring distance from UMD as a continuous variable would be easier to visualize (like in a histogram). Or just a simple bar chart of the most common zip codes and some description about the more obscure ones.
+- It might be nice to label them as figure 1, figure 2, etc to make discussing them easier.
+- To capture HPI, maybe you can take a look at some of the most common zip codes. projected HPI in the future could also be interesting if it's associated with a higher homelessness rate.
+- To discuss plots in context and make them useful for UMD, I think your mapping idea will help to create a big picture for them. Try to remind your audience why it HPI of where clients come from matters.
+
+5. How can the project be organized or documented more clearly?
+- Make and Docker will help with workflow. When I ran your R code, I didn't already  have all the packages installed--make sure this is taken care of for the final draft.
+- Project can be better documented with a more descriptive README. Add some context about UMD and your analysis steps to the results and/or README.
+
+6. Is the purpose of the project communicated clearly?
+- Mostly. The data descriptions ("Notes") in the README are helpful to illustrate how the datasets are relevant to the analysis task. 
+
+7. Does the purpose of the project make sense from the client’s point of view? How could the project better serve the client?
+- Knowing where people came from can certainly be useful, but maybe be more specific: how can UMD use the information about where clients came from? can they make any predictions or directly improve their services with the information you're summarizing?
+
+8. Is the source of the data made clear? (Remember that this project can be part of your public portfolios, so people not familiar with UMD may see it).
+- Yes, the links to online data sources are included and there is a data folder on github. It is clearly stated that the datasets come from UMD and what is in each of them.
+- It's cool that you're also bringing in an external data source. Maybe add a statement about why HPI is relevant. 
+
+9. Is the interpretation of figures clearly explained?
+- No interpretations yet in a report. When discussing the zip code plots, including the town/city name for each one will help give the audience context.
+
+10. Is the purpose and interpretation of analysis steps clearly communicated?
+- Code is well-commented showing analysis steps, but there's no report yet.  
+
+11. Are overall take-home messages clearly communicated?
+- Not yet, since there is no report, but goals are explained. 
+
+General feedback:
+- The README could be more useful if it contained an introduction to UMD to give the data some context.
+- R code was nicely commented and easy to follow. 
+- Having the plots already saved to github would have made reviewing easier--make sure they're in the report. 
+- I think the concept of working with zip codes is very interesting! Try to add some explanation about why this information is useful to UMD. 
+- What is the motivation for investigating housing price index and visitor frequency? What other related variables could be included in this question?
+- I look forward to seeing your finished project! I find spatial data inherently interesting, so I'm glad UMD had zip codes for us and that someone is investigating them. 
+
+

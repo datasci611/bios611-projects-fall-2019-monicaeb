@@ -1,0 +1,41 @@
+1. Is the project organized modularly, with Make as the workflow manager?
+- Yes, there is a makefile included. It might be easier to navigate the repository with a folder for scripts and another for output.
+- It would also be helpful for the README to describe how the repository is organized, and what each script/file includes. 
+- I like that the README already has sections! Even though you're in progress, it's helpful to see where you're going with this. I like that you've included a 'contact' section.
+- In the 'data elements of interest' section of the README, add the source datasets that each variable is coming from. 
+
+2. Does the project use both Python (Pandas specifically) and R (Tidyverse specifically) scripts?
+- Yes, and both scripts are commented. Including output from head() of the dataframe in python is helpful to see the process.
+- It looks like you've made master_df by merging source data in pandas. I think this can make file dependencies (like reading into R) easier to follow.
+
+3. Is Docker used to define execution environments appropriately?
+- No dockerfile yet, but it's noted in the README. Be sure that it includes the right versions of R, python, and packages used.
+
+4. Are the plots appropriate for the data types, the hypotheses being tested, and the points being communicated?
+- There aren't any plots saved yet. I'm a little confused based on the plots being created in the R code, though. Looks like it's using family-related data from project 1, and nothing about veterans or disability data from project 3. 
+
+5. How can the project be organized or documented more clearly?
+- The python script is commented well, but I'm confused by the R script. I don't see where the master dataframe you created in python is being brought in. 
+- It looks like you're reading in data from an old project repository. The project might be easier to follow if you copy over data used in past projects to the project 3 repo, or at least describe where each came from.
+- I see that you have an additional dataset section in the README. Bringing in extra data is cool, and this section will be helpful! Add some background about the source and why you chose to incorporate it.
+
+6. Is the purpose of the project communicated clearly?
+- Goals are clearly listed in the overview. It might be helpful to add some background about UMD and why you decided to look at these particular variables. 
+
+7. Does the purpose of the project make sense from the client’s point of view? How could the project better serve the client?
+- Elaborate more on why you decided to look at these variables and how it can be useful for clients.
+- Specifically, how can understanding disabilities and insurance help UMD serve clients better? Is there any way they can plan ahead and make predictions to better serve future clients?
+
+8. Is the source of the data made clear? (Remember that this project can be part of your public portfolios, so people not familiar with UMD may see it).
+- The README just mentions 'UMD data sets' but doesn't expand on that. Which specific data sets did you use, and how can the audience access them? 
+- It's nice that you included variable names in the 'data elements of interest' section of the README. It might be helpful to describe which data set each of these came from and how they'll be used in analysis. It's not initially clear why zip code is relevant, given the project goals described..
+- Where data names are listed, consider discussing what type of values they are too. 
+
+9. Is the interpretation of figures clearly explained?
+- no output figures or accompanying interpretation yet.
+
+10. Is the purpose and interpretation of analysis steps clearly communicated?
+- The python code is commented well so far. R code is also clean, but doesn't look like it's relevant based on goals stated in the README. 
+
+11. Are overall take-home messages clearly communicated?
+- None yet, since there is no report yet.
