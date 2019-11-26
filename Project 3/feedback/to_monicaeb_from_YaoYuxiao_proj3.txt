@@ -1,0 +1,59 @@
+
+Hi Monica,
+
+
+Overall, your project3 draft has a good format and logic!
+
+
+
+-------------Review of README-------------
+
+
+The background is very clear to me.
+
+However, it would be helpful to have more details to describe datasets used in the project.
+
+Exploratory goals are clear and interesting, they make sense from the client’s point of view. 
+
+Methods for the project provide a good outline.
+
+
+-------------Review of Makefile and Dockerfile----------------
+
+I didn't find your Makefile and Dockerfile
+
+-------------Review of Python and R scripts----------------
+
+
+The project uses both Python (Pandas specifically) and R (Tidyverse specifically) scripts well.
+
+Your codes are neat and readable!
+
+
+-------------Review of html report---------------------
+
+
+Various kinds of plots do a good job of analyzing and summarizing.
+
+The interpretation of figures is clearly explained.
+
+More details about background and datasets would be helpful.
+
+I like your idea of exploring "Are some months more popular than others for new clients?". 
+
+However, it would be better if underlying meaning of the seasonality hypotheses can be discussed.
+
+Also, you may want to add more transistion paragraphs to show connections between questions.
+
+
+
+-------------Review of codes--------------------
+
+
+
+Your codes are neat and readable!
+
+
+
+
+Good luck in final project!

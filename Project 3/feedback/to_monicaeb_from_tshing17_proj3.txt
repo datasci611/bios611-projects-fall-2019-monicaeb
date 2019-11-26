@@ -1,0 +1,40 @@
+Provide feedback about the following topics:
+
+1. Is the project organized modularly, with Make as the workflow manager?
+Yes, the top level of the project has a Dockerfile and Makefile that is easy to find.  The README also clearly defines these files.
+
+2. Does the project use both Python (Pandas specifically) and R (Tidyverse specifically) scripts?
+Great use of Pandas to access and wrangle data.  Your comments are very helpful.  Your use of Tidyverse to create the plots is amazing.  The piping makes your code very clean and clear. I like how you organized your project to create plots in one script then import them as images in your Rmarkdown.
+
+3. Is Docker used to define execution environments appropriately?
+N/A - Your overall draft already looks great and you're a really good programmer, I'm sure you'll get this working for the final project.
+
+4. Are the plots appropriate for the data types, the hypotheses being tested, and the points being communicated?
+Yes, all of the plots are appropriate for the data types.  I like how you have the questions you are answering as the headings in your report.  This makes your hypotheses very clear.
+
+Trying to make a meta comment - The text before Figure 1 says that if a client returns to UMD after leaving at a different date, their return entry counts as another entry.  This wording made me think that you would double count clients.  However, in your code, it looks like you subset the data to unique entries of Client.ID and Client.Age.at.Entry.  So I think this makes it somewhere between 1 entry per clients and all entries per client.  For example, suppose we have
+Entry 1: Client 001 comes in on 10/23/2019 and is age 42.  
+Entry 2: Client 001 comes in on 11/23/2019 and is age 42.
+Entry 3: Client 001 comes in on 12/23/2019 and is age 43.
+Using the unique() statement, I think only Entry 2 is removed.  I think if you add the Entry.Date variable to the dataframe when using the unique statement then Entry 2 won't be removed.  If you could double check this or clarify the text, that would be helpful.
+
+5. How can the project be organized or documented more clearly?
+Your project is super clear and very well organized.
+
+6. Is the purpose of the project communicated clearly?
+Yes, the purpose is stated in the README under "Exploratory goals" and in the report as "Goals of this report."  
+
+7. Does the purpose of the project make sense from the client’s point of view? How could the project better serve the client?
+This project report is easily readable from the client's point of view and provides really nice instructions for how to read some of the figures.  Your explanation of boxplots is great.
+
+8. Is the source of the data made clear? (Remember that this project can be part of your public portfolios, so people not familiar with UMD may see it).
+Yes, there are links to the raw data and a link to the UMD website for reference.
+
+9. Is the interpretation of figures clearly explained?
+Yes, very clear and thoughtful intepretations.
+
+10. Is the purpose and interpretation of analysis steps clearly communicated?
+Yes, each question has intro text to explain any choices regarding the analysis.  Then the figure for the analysis is provided.  Finally an interpretation of the figure is given.  This makes all analyses very clear.
+
+11. Are overall take-home messages clearly communicated?
+The bullet point conclusions make the take-home messages very clear.

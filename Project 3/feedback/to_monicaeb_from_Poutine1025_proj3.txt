@@ -1,0 +1,32 @@
+1. Is the project organized modularly, with Make as the workflow manager?
+- The project is organized very well, but it seems that the Makefile has not been prepared yet.
+
+2. Does the project use both Python (Pandas specifically) and R (Tidyverse specifically) scripts?
+- Yes, you used Python (Pandas) for wrangling and R (Tidyverse) for visualization very well.
+
+3. Is Docker used to define execution environments appropriately?
+- The Dockerfile seems to be not prepared yet. I’m sure you can finish it in your final project.
+
+4. Are the plots appropriate for the data types, the hypotheses being tested, and the points being communicated?
+- Yes, the plots are elegant and appropriate for the data types and the points are communicated.
+
+5. How can the project be organized or documented more clearly?
+- I noticed you used bullet points to draw your conclusions rather than using a paragraph structure. I guess if you can draw your conclusions using a paragraph structure and explain how they are related to your goals and how to use them to serve the client better, your report will be more understandable.
+
+6. Is the purpose of the project communicated clearly?
+- Yes, I can find your purpose very easily in your report.
+
+7. Does the purpose of the project make sense from the client’s point of view? How could the project better serve the client?
+- I found your purpose is very meaningful, but it seems that you have not discussed how to serve the client better using your results. I’m sure it is easy to add this part.
+
+8. Is the source of the data made clear? (Remember that this project can be part of your public portfolios, so people not familiar with UMD may see it).
+- Yes, the source of data is stated in readme.
+
+9. Is the interpretation of figures clearly explained?
+- Yes, the figures are well interpreted and easy to understand.
+
+10. Is the purpose and interpretation of analysis steps clearly communicated?
+- Yes, the analysis steps are organized in several sections, which is clear and easy to read.
+
+11. Are overall take-home messages clearly communicated?
+- Yes, all the take-home messages are clearly communicated.
