@@ -58,7 +58,6 @@ p_yeargend
 
 ggsave(plot=p_yeargend,filename="./report/p_yeargend.png",device="png")
 
-
 # histograms of people arriving/leaving, split by month
 f_visit <- dat %>% group_by(first_year,first_m) %>% mutate(sumIDs=length(Client.ID)) %>%
   ungroup() %>% select(first_year,first_m,sumIDs) %>%
@@ -107,7 +106,7 @@ quantile(dat$diffdays,0.99,na.rm=TRUE)
 p_prevlen <- ggplot(data=dat.prevlen[dat.prevlen$diffdays<=303,],aes(x=prevstay,y=diffdays)) +
   geom_boxplot(color="rosybrown4",fill="seashell1") + 
   theme_minimal() + theme(axis.text.y = element_text(angle = 30, hjust = 1)) + coord_flip() +
-  labs(title="Figure 5: Days Spent at UMD Shelter (up to 95% quantile)\n by Time in Previous Location",
+  labs(title="Figure 5: Days Spent at UMD Shelter (up to 95th percentile) by Time in Previous Location",
        x="Time spent at previous place",y="Days spent at UMD shelter")
 p_prevlen
 
@@ -130,7 +129,7 @@ p_lengthstat <- ggplot(data=dat.stat[dat.stat$diffdays<=303,]) +
   #geom_point(aes(x=status,y=diffdays),color="snow4",size=0.9) + 
   #geom_jitter(aes(x=status,y=diffdays),width=0.25,color="snow4",size=0.3) +
   theme_minimal() + theme(axis.text.y = element_text(angle = 30, hjust = 1)) +
-  labs(title="Figure 6: Days spent at UMD Shelter (up to 95% quantile)\n by Housing Status",y="Days",x="Housing\nStatus")
+  labs(title="Figure 6: Days spent at UMD Shelter (up to 95th percentile) by Housing Status",y="Days",x="Housing\nStatus")
 p_lengthstat
 
 ggsave(plot=p_lengthstat,filename="./report/p_lengthstat.png",device="png")
@@ -150,7 +149,7 @@ dat.dest <- dat %>%
 
 p_statdest <- ggplot(data=dat.dest, aes(status,fill=dest)) + 
   geom_bar(position="fill") + scale_fill_brewer(palette = "Set2") +
-  labs(title="Figure 7: Destination after UMD by Housing Status at Entry",x="Housing status",y="% of Clients") +
+  labs(title="Figure 7: Destination after UMD by Housing Status at Entry",x="Housing status",y="% of Clients") + theme_minimal() +
   guides(fill=guide_legend(title="Next destination")) #+ theme(axis.text.x = element_text(angle =30, hjust = 1))
 p_statdest
 
