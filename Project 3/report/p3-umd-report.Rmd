@@ -46,12 +46,12 @@ New men and women visitors increase and decrease over the same time intervals, b
 <img src="p_yeargend.png" width=95%> 
 
 The steady increase from 2012 to 2015 may be due to increased need in the area or expanding UMD's resources and capacity since the shelter opening. 
-As the number of new clients decreases, this does not indicate a decrease in number of people at the shelter--people may simply be staying longer, meaning that there is less room for new clients. Additionally, the number of new yearly clients appears to be leveling off, with a measure of 600 in 2018 and 550 thus far in 2019. Transgender clients appear constant over the years in comparison, due to the small number (N=10) of check-ins in this group.
+As the number of new clients decreases, this does not indicate a decrease in number of people at the shelter--people may simply be staying longer, meaning that there is less room for new clients. Additionally, the number of new yearly clients appears to be leveling off, with a measure of 669 in 2018 and 571 thus far in 2019. Transgender clients appear constant over the years in comparison, due to the small number (N=10) of check-ins in this group.
 
 <br>
 
 #### Are some months more popular than others for new clients?
-As new clients come to UMD every year, it may be helpful to understand if some months are more popular than others and how to plan ahead for waves of check-ins. This is motivated by the hypothesis that seasonal weather shifts may impact community needs for shelter. For example, we might expect an uptick of entries in the winter, or for people to not leave UMD's shelter during winter months. 
+As new clients come to UMD every year, it may be helpful to understand if some months are more popular than others and how to plan ahead for waves of check-ins. This is motivated by the hypothesis that seasonal weather shifts may impact community needs for shelter. For example, we might expect an uptick of entries in the winter, or for people to not leave UMD's shelter during winter months. Availability of seasonal work or other community resources could also influence housing status throughout the year.
 
 Figure 3 includes 12 box plots, each containing the distribution of number of new clients in a month for each year since 2012. The horizontal line is the median value, and the top and bottom of each box represent the 75th and 25th percentile, respectively. Each point is the sum of check-ins at UMD during that month for a particular year. Note that If a client returns to UMD after leaving at a different date, their return entry counts as another entry.
 
@@ -67,7 +67,7 @@ Similarly to Figure 3, Figure 4 displays the distribution of departures from the
 
 <img src="p_histl.png" width=95%>
 
-Since all of the distributions represented by the box plots overlap, we cannot conclude that different months see a significantly different number of departures. 
+Since all of the distributions represented by the box plots overlap, we cannot conclude that different months see a significantly different number of departures. Medians range from 61 average departures in July to 121 on average in March.
 
 <br>
 
@@ -91,6 +91,7 @@ A fair portion of clients do not have associated data about where they go after 
 
 #### Conclusions
 Understanding the comings-and-goings of past shelter clients can help UMD form expectations about the current happening and future of the shelter. Temporal or housing status trends aren't strong for client arrival, departure, and destination. However, we have an idea of how long people are likely to stay. 
+
 * Individuals come and go relatively consistently by month throughout years over time. 
 * Individuals staying at the UMD shelter tend to be a little older than the average age in Durham, and most clients are men.
 * The rate of new clients visiting the UMD shelter may be leveling out, however it will take a few more years to decide if this is true. Additionally, the expansion of UMD's resources in the future might invite an uptick in clients. 

@@ -25,7 +25,7 @@ The intended audience for this project is primarily those working with or at UMD
 * report.Rmd is the Rmarkdown file used to create the report. This script depends on plots.R and eda.ipynb to compile.
 
 #### Make and Docker
-To recreate this analysis and report, a [makefile]() and [docker file]() are available to manage workflow and ensure use of the correct R and python packages.
+To recreate this analysis and report, a [makefile](/scripts/makefile) and [docker file](/scripts/dockerfile) are available to manage workflow and ensure use of the correct R and python packages.
 
 
 
