@@ -7,6 +7,7 @@
 The intended audience for this project is primarily those working with or at UMD. Additionally, anyone interested in nonprofit data or poverty around North Carolina may find this project informative.
 
 [Click here](https://rawcdn.githack.com/datasci611/bios611-projects-fall-2019-monicaeb/3753ac463060810f4142d3fbedda377e23a3db1a/Project 3/report/p3-umd-report.html) to see the rendered html report in a browser without having to download anything it raw.
+[Click here](https://docs.google.com/presentation/d/1Gc2DPtDxYp77OK9zwu9oE_6pLZ7wyUgq3v9M5vwSy5A/edit?usp=sharing) to view accompanying presentation slides. 
 
 #### Source Data
 * Datasets provided by UMD describe shelter services provided at the Durham campus. 
